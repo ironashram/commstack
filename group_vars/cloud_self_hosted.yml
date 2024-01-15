@@ -1,5 +1,4 @@
-﻿#ansible_python_interpreter: auto_silent
-package_update: True
+﻿package_update: true
 debian_base_packages:
   - ca-certificates
   - curl
@@ -10,3 +9,4 @@ debian_base_packages:
   - docker-compose-plugin
   - git
   - gnupg
+  - netfilter-persistent

@@ -1,0 +1,22 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [310:36958]
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 465 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 587 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 993 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 8448 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 18448 -j ACCEPT
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+COMMIT
+*nat
+:PREROUTING ACCEPT [1:44]
+:INPUT ACCEPT [1:44]
+:OUTPUT ACCEPT [2:143]
+:POSTROUTING ACCEPT [2:143]
+COMMIT

@@ -3,6 +3,14 @@
   ansible.builtin.apt:
     name: unattended-upgrades
     state: absent
+    purge: true
+
+- name: pkg_debian | Remove ufw
+  ansible.builtin.apt:
+    name: ufw
+    state: absent
+    purge: true
+  notify: Flush iptables
 
 - name: pkg_debian | Add Docker GPG apt Key
   ansible.builtin.apt_key:

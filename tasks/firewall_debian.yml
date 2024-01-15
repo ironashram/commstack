@@ -1,0 +1,31 @@
+﻿---
+- name: firewall_debian | Create /etc/iptables
+  ansible.builtin.file:
+    path: /etc/iptables
+    state: directory
+    mode: "0755"
+
+- name: firewall_debian | Copy ipv4 rules file
+  ansible.builtin.copy:
+    src: files/rules.v4
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+
+- name: firewall_debian | Copy ipv6 rules file
+  ansible.builtin.copy:
+    src: files/rules.v6
+    dest: /etc/iptables/rules.v6
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+
+- name: firewall_debian | Apply iptables state
+  community.general.iptables_state:
+    state: restored
+    path: /etc/iptables/rules.v4
+  async: "{{ ansible_timeout }}"
+  poll: 0

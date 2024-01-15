@@ -11,3 +11,15 @@
     - name: Debian packages
       ansible.builtin.import_tasks: tasks/pkg_debian.yml
       when: ansible_os_family == 'Debian'
+      tags: packages
+
+    - name: Configure Firewall
+      ansible.builtin.import_tasks: tasks/firewall_debian.yml
+      when: ansible_os_family == 'Debian'
+      tags: firewall
+
+
+  handlers:
+    - name: Flush iptables
+      ansible.builtin.iptables:
+        flush: true
