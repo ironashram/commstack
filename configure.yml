@@ -1,0 +1,13 @@
+---
+- name: Configure Instances
+  hosts: cloud_self_hosted
+  gather_facts: true
+  tasks:
+    - name: Distribution
+      ansible.builtin.debug:
+        msg:
+          - "{{ ansible_distribution }}"
+
+    - name: Debian packages
+      ansible.builtin.import_tasks: tasks/pkg_debian.yml
+      when: ansible_os_family == 'Debian'
