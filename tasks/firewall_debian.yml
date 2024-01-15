@@ -23,9 +23,19 @@
     mode: "0644"
     backup: true
 
-- name: firewall_debian | Apply iptables state
+- name: firewall_debian | Apply ipv4 iptables rules
   community.general.iptables_state:
     state: restored
     path: /etc/iptables/rules.v4
   async: "{{ ansible_timeout }}"
   poll: 0
+  when: not ansible_check_mode
+
+- name: firewall_debian | Apply ipv6 iptables rules
+  community.general.iptables_state:
+    state: restored
+    path: /etc/iptables/rules.v6
+    ip_version: ipv6
+  async: "{{ ansible_timeout }}"
+  poll: 0
+  when: not ansible_check_mode
