@@ -1,8 +1,16 @@
 ---
 - name: Configure Instances
   hosts: cloud_self_hosted
-  gather_facts: true
+  gather_facts: false
   tasks:
+    - name: SSH Config
+      ansible.builtin.import_role:
+        name: ssh_port
+      tags: ssh
+
+    - name: Deferred setup to gather facts
+      ansible.builtin.setup:
+
     - name: Distribution
       ansible.builtin.debug:
         msg:
@@ -17,7 +25,6 @@
       ansible.builtin.import_tasks: tasks/firewall_debian.yml
       when: ansible_os_family == 'Debian'
       tags: firewall
-
 
   handlers:
     - name: Flush iptables
