@@ -26,6 +26,14 @@
       when: ansible_os_family == 'Debian'
       tags: firewall
 
+    - name: Configure Matrix
+      ansible.builtin.import_tasks: tasks/matrix.yml
+      tags: matrix
+
+    - name: Configure Mail Server
+      ansible.builtin.import_tasks: tasks/mailserver.yml
+      tags: mailserver
+
   handlers:
     - name: Flush iptables
       ansible.builtin.iptables:

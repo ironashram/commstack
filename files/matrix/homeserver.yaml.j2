@@ -1,0 +1,45 @@
+﻿server_name: {{ matrix_domain }}
+pid_file: "/var/run/matrix-synapse.pid"
+public_baseurl: https://{{ matrix_domain }}/
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    bind_addresses: ["0.0.0.0"]
+
+    resources:
+      - names: [client, federation]
+        compress: false
+acme:
+  enabled: false
+federation_ip_range_blacklist:
+  - "127.0.0.0/8"
+  - "10.0.0.0/8"
+  - "172.16.0.0/12"
+  - "192.168.0.0/16"
+  - "100.64.0.0/10"
+  - "169.254.0.0/16"
+  - "::1/128"
+  - "fe80::/64"
+  - "fc00::/7"
+database:
+  name: sqlite3
+  args:
+    database: /var/lib/matrix-synapse/homeserver.db
+log_config: "/etc/matrix-synapse/log.yaml"
+rc_message:
+  per_second: 1
+  burst_count: 1000
+media_store_path: "/var/lib/matrix-synapse/media"
+enable_registration: false
+registration_shared_secret: {{ matrix_registration_secret }}
+signing_key_path: "/etc/matrix-synapse/homeserver.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+oidc_config:
+  user_mapping_provider:
+    config:
+      localpart_template: "{{ '{{ user.preferred_username }}' }}"
+report_stats: false
+suppress_key_server_warning: true

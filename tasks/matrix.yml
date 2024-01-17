@@ -1,0 +1,37 @@
+﻿---
+- name: matrix | Create docker compose folders
+  ansible.builtin.file:
+    path: /docker/matrix/{{ item }}
+    state: directory
+    mode: "0755"
+  loop:
+    - nginx_conf
+    - synapse_data
+
+- name: matrix | Template nginx conf
+  ansible.builtin.template:
+    src: files/matrix/matrix-nginx.conf.j2
+    dest: /docker/matrix/nginx_conf/matrix-nginx.conf
+    mode: "0644"
+
+- name: matrix | Template synapse homeserver.yaml
+  ansible.builtin.template:
+    src: files/matrix/homeserver.yaml.j2
+    dest: /docker/matrix/synapse_data/homeserver.yaml
+    mode: "0644"
+
+- name: matrix | Copy log.yaml
+  ansible.builtin.copy:
+    src: files/matrix/log.yaml
+    dest: /docker/matrix/synapse_data/log.yaml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: matrix | Create homeserver.signing.key
+  ansible.builtin.template:
+    src: files/matrix/homeserver.signing.key.j2
+    dest: /docker/matrix/synapse_data/homeserver.signing.key
+    owner: root
+    group: root
+    mode: "0644"

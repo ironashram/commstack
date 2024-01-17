@@ -1,0 +1,21 @@
+﻿version: '3'
+
+services:
+
+  nginx:
+    image: "nginx:${NGINX_VERSION}"
+    restart: "always"
+    volumes:
+      - nginx_conf:/etc/nginx/conf.d
+
+  synapse:
+    image: "docker.io/matrixdotorg/synapse:${SYNAPSE_VERSION}"
+    restart: unless-stopped
+    environment:
+      - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+    volumes:
+      - synapse_data:/data
+
+volumes:
+  nginx_conf:
+  synapse_data:
