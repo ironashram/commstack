@@ -10,4 +10,3 @@ debian_base_packages:
   - git
   - gnupg
   - netfilter-persistent
-matrix_domain: m1k.cloud

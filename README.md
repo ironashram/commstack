@@ -5,10 +5,10 @@ Contains automation and tooling to manage many self hosted things.
 
 Check
 ```
-ansible-playbook -i inventory.yml configure.yml -e @vault.yml --check
+ansible-playbook -i inventory.yml configure.yml --check
 ```
 
 Configure
 ```
-ansible-playbook -i inventory.yml configure.yml -e @vault.yml
+ansible-playbook -i inventory.yml configure.yml
 ```

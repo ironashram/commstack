@@ -1,6 +1,6 @@
-﻿server_name: {{ matrix_domain }}
+﻿server_name: {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}
 pid_file: "/var/run/matrix-synapse.pid"
-public_baseurl: https://{{ matrix_domain }}/
+public_baseurl: https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/
 listeners:
   - port: 8008
     tls: false
@@ -33,7 +33,7 @@ rc_message:
   burst_count: 1000
 media_store_path: "/var/lib/matrix-synapse/media"
 enable_registration: false
-registration_shared_secret: {{ matrix_registration_secret }}
+registration_shared_secret: {{ lookup('hashi_vault', 'secret=kv/data/matrix:registration_secret') }}
 signing_key_path: "/etc/matrix-synapse/homeserver.signing.key"
 trusted_key_servers:
   - server_name: "matrix.org"

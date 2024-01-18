@@ -1,15 +1,15 @@
 ﻿server {
     listen 0.0.0.0:443 http2 ssl;
-    server_name {{ matrix_domain }};
+    server_name {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
 
-    ssl_certificate /etc/letsencrypt/live/{{ matrix_domain }}/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/{{ matrix_domain }}/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/privkey.pem; # managed by Certbot
 
     listen 8448 ssl http2 default_server;
     listen [::]:8448 ssl http2 default_server;
 
-    ssl_certificate /etc/letsencrypt/live/{{ matrix_domain }}/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/{{ matrix_domain }}/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/privkey.pem; # managed by Certbot
 
     location / {
         return 403 '{"error": "Forbidden"}';
@@ -17,14 +17,14 @@
     }
 
     location /.well-known/matrix/client {
-        return 200 '{"m.homeserver": {"base_url": "https://{{ matrix_domain }}"}, "org.matrix.msc3575.proxy": {"url": "https://{{ matrix_domain }}"}}';
+        return 200 '{"m.homeserver": {"base_url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}, "org.matrix.msc3575.proxy": {"url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}}';
         default_type application/json;
         add_header Access-Control-Allow-Origin *;
     }
 
     location /.well-known/matrix/server {
         default_type application/json;
-        return 200 '{"m.server": "{{ matrix_domain }}"}';
+        return 200 '{"m.server": "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}';
     }
 
     location ~ ^/(client/|_matrix/client/unstable/org.matrix.msc3575/sync) {

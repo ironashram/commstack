@@ -1,7 +1,7 @@
 ﻿---
 - name: Set configured port fact
   ansible.builtin.set_fact:
-    configured_port: "{{ custom_ansible_port }}"
+    configured_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
 
 - name: Check if we're using the default SSH port
   ansible.builtin.wait_for:
