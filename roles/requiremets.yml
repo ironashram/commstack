@@ -1,0 +1,4 @@
+﻿---
+- src: git+https://github.com/nephelaiio/ansible-role-acme-certificate-cloudflare.git
+  version: 3.0.9
+  name: acme-cloudflare

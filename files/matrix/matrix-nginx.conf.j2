@@ -1,44 +1,71 @@
-﻿server {
-    listen 0.0.0.0:443 http2 ssl;
-    server_name {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
+user  nginx;
+worker_processes  auto;
 
-    ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/privkey.pem; # managed by Certbot
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
 
-    listen 8448 ssl http2 default_server;
-    listen [::]:8448 ssl http2 default_server;
 
-    ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/privkey.pem; # managed by Certbot
+events {
+    worker_connections  1024;
+}
 
-    location / {
-        return 403 '{"error": "Forbidden"}';
-        default_type application/json;
-    }
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
 
-    location /.well-known/matrix/client {
-        return 200 '{"m.homeserver": {"base_url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}, "org.matrix.msc3575.proxy": {"url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}}';
-        default_type application/json;
-        add_header Access-Control-Allow-Origin *;
-    }
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 
-    location /.well-known/matrix/server {
-        default_type application/json;
-        return 200 '{"m.server": "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}';
-    }
+    access_log  /var/log/nginx/access.log  main;
 
-    location ~ ^/(client/|_matrix/client/unstable/org.matrix.msc3575/sync) {
-        proxy_pass http://localhost:8009;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $host;
-    }
+    sendfile        on;
 
-    location ~ ^(\/_matrix|\/_synapse\/client) {
-        proxy_pass http://localhost:8008;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $host;
-        client_max_body_size 50M;
+    keepalive_timeout  65;
+
+    server {
+        listen 0.0.0.0:443 ssl;
+        http2  on;
+        server_name {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
+
+        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/privkey.pem; # managed by Certbot
+
+        listen 8448 ssl default_server;
+        listen [::]:8448 ssl default_server;
+
+        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/privkey.pem; # managed by Certbot
+
+        location / {
+            return 403 '{"error": "Forbidden"}';
+            default_type application/json;
+        }
+
+        location /.well-known/matrix/client {
+            return 200 '{"m.homeserver": {"base_url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}, "org.matrix.msc3575.proxy": {"url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}}';
+            default_type application/json;
+            add_header Access-Control-Allow-Origin *;
+        }
+
+        location /.well-known/matrix/server {
+            default_type application/json;
+            return 200 '{"m.server": "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}';
+        }
+
+        location ~ ^/(client/|_matrix/client/unstable/org.matrix.msc3575/sync) {
+            proxy_pass http://localhost:8009;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+        }
+
+        location ~ ^(\/_matrix|\/_synapse\/client) {
+            proxy_pass http://localhost:8008;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            client_max_body_size 50M;
+        }
     }
 }

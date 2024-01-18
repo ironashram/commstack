@@ -11,7 +11,7 @@
 - name: matrix | Template nginx conf
   ansible.builtin.template:
     src: files/matrix/matrix-nginx.conf.j2
-    dest: /docker/matrix/nginx_conf/matrix-nginx.conf
+    dest: /docker/matrix/nginx_conf/nginx.conf
     mode: "0644"
 
 - name: matrix | Template synapse homeserver.yaml
@@ -32,6 +32,14 @@
   ansible.builtin.template:
     src: files/matrix/homeserver.signing.key.j2
     dest: /docker/matrix/synapse_data/homeserver.signing.key
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: matrix | Copy docker-compose.yml
+  ansible.builtin.copy:
+    src: files/matrix/docker-compose.yml
+    dest: /docker/matrix/docker-compose.yml
     owner: root
     group: root
     mode: "0644"
