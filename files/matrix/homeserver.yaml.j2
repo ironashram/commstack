@@ -1,6 +1,6 @@
-﻿server_name: {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}
+﻿server_name: matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}
 pid_file: "/var/run/matrix-synapse.pid"
-public_baseurl: https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/
+public_baseurl: https://matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/
 listeners:
   - port: 8008
     tls: false

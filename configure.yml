@@ -10,15 +10,20 @@
     - name: SSH Config
       ansible.builtin.import_role:
         name: custom_ssh_port
-      tags: ssh
+      tags:
+        - ssh
 
     - name: Deferred setup to gather facts
       ansible.builtin.setup:
+      tags:
+        - always
 
     - name: Distribution
       ansible.builtin.debug:
         msg:
           - "{{ ansible_distribution }}"
+      tags:
+        - always
 
     - name: Debian packages
       ansible.builtin.import_tasks: tasks/pkg_debian.yml
@@ -29,6 +34,15 @@
       ansible.builtin.import_tasks: tasks/firewall_debian.yml
       when: ansible_os_family == 'Debian'
       tags: firewall
+
+    - name: Configure ACME cloudflare
+      ansible.builtin.import_role:
+        name: acme-cloudflare
+      vars:
+        acme_certificate_email: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_email') }}"
+        acme_certificate_domain: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_domain_wildcard') }}"
+        acme_certificate_cf_account_token: "{{ lookup('hashi_vault', 'secret=kv/data/cloudflare:api_token') }}"
+      tags: acme
 
     - name: Configure Matrix
       ansible.builtin.import_tasks: tasks/matrix.yml

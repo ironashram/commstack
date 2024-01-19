@@ -1,7 +1,8 @@
-﻿package_update: true
+﻿# packages
+package_update: true
 debian_base_packages:
   - ca-certificates
-  - certbot
+  #  - certbot
   - curl
   - containerd.io
   - docker-ce
@@ -11,5 +12,8 @@ debian_base_packages:
   - git
   - gnupg
   - netfilter-persistent
-  - python3-cloudflare
-  - python3-certbot-dns-cloudflare
+  - python3-pip
+#  - python3-cloudflare
+#  - python3-certbot-dns-cloudflare
+
+
