@@ -1,4 +1,0 @@
-﻿cloud_self_hosted:
-  hosts:
-    some.cloud.instance:
-      ansible_host: "1.2.3.4"

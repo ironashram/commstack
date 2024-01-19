@@ -28,14 +28,14 @@ http {
         http2  on;
         server_name {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
 
-        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }}.chain.crt;
-        ssl_certificate_key /etc/letsencrypt/keys/id_rsa.{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }};
+        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:base_domain') }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:base_domain') }}/privkey.pem;
 
         listen 8448 ssl default_server;
         listen [::]:8448 ssl default_server;
 
-        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }}.chain.crt;
-        ssl_certificate_key /etc/letsencrypt/keys/id_rsa.{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }};
+        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:base_domain') }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:base_domain') }}/privkey.pem;
 
         location / {
             return 403 '{"error": "Forbidden"}';
@@ -55,14 +55,14 @@ http {
         }
 
         location ~ ^/(client/|_matrix/client/unstable/org.matrix.msc3575/sync) {
-            proxy_pass http://localhost:8009;
+            proxy_pass http://sliding-proxy:8009;
             proxy_set_header X-Forwarded-For $remote_addr;
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_set_header Host $host;
         }
 
         location ~ ^(\/_matrix|\/_synapse\/client) {
-            proxy_pass http://localhost:8008;
+            proxy_pass http://synapse:8008;
             proxy_set_header X-Forwarded-For $remote_addr;
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_set_header Host $host;

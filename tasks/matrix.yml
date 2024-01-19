@@ -10,6 +10,7 @@
     - synapse_data/db
     - synapse_data/media_store
     - synapse_data/sliding_sync_db
+    - synapse_data/certbot_etc
 
 - name: matrix | Template nginx conf
   ansible.builtin.template:
@@ -27,6 +28,14 @@
   ansible.builtin.template:
     src: files/matrix/homeserver.signing.key.j2
     dest: /docker/matrix/synapse_data/homeserver.signing.key
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: matrix | Template cloudflare.ini
+  ansible.builtin.template:
+    src: files/matrix/cloudflare.ini.j2
+    dest: /docker/matrix/synapse_data/cloudflare.ini
     owner: root
     group: root
     mode: "0644"

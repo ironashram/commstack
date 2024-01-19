@@ -1,0 +1,4 @@
+﻿all:
+  hosts:
+    localhost:
+      connection: local

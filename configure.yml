@@ -1,48 +1,33 @@
 ---
-- name: Configure Instances
-  hosts: cloud_self_hosted
+- name: Dynamic Inventory
+  hosts: localhost
   gather_facts: false
-  vars:
-    ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
-    ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
-    ansible_ssh_private_key_file: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:key') }}"
   tasks:
-    - name: SSH Config
-      ansible.builtin.import_role:
-        name: custom_ssh_port
-      tags:
-        - ssh
+    - name: Add Hosts
+      ansible.builtin.add_host:
+        name: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"
+        groups: cloud_self_hosted
+        ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
+        ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
+        ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
+        ansible_ssh_private_key_file: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:key') }}"
 
-    - name: Deferred setup to gather facts
-      ansible.builtin.setup:
-      tags:
-        - always
-
-    - name: Distribution
+- name: Configure Personal Services
+  hosts: cloud_self_hosted
+  gather_facts: true
+  tasks:
+    - name: Print Ansible Distribution
       ansible.builtin.debug:
         msg:
           - "{{ ansible_distribution }}"
-      tags:
-        - always
 
-    - name: Debian packages
-      ansible.builtin.import_tasks: tasks/pkg_debian.yml
-      when: ansible_os_family == 'Debian'
+    - name: Install Packages
+      ansible.builtin.import_tasks: tasks/pkg.yml
       tags: packages
 
-    - name: Configure Firewall
-      ansible.builtin.import_tasks: tasks/firewall_debian.yml
-      when: ansible_os_family == 'Debian'
-      tags: firewall
-
-    - name: Configure ACME cloudflare
-      ansible.builtin.import_role:
-        name: acme-cloudflare
-      vars:
-        acme_certificate_email: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_email') }}"
-        acme_certificate_domain: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_domain_wildcard') }}"
-        acme_certificate_cf_account_token: "{{ lookup('hashi_vault', 'secret=kv/data/cloudflare:api_token') }}"
-      tags: acme
+    - name: Configure Iptables
+      ansible.builtin.import_tasks: tasks/iptables.yml
+      tags: iptables
 
     - name: Configure Matrix
       ansible.builtin.import_tasks: tasks/matrix.yml

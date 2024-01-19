@@ -1,28 +1,28 @@
 ﻿---
-- name: pkg_debian | Disable auto-updates (Removing unattended-upgrades package)
+- name: pkg | Disable auto-updates (Removing unattended-upgrades package)
   ansible.builtin.apt:
     name: unattended-upgrades
     state: absent
     purge: true
 
-- name: pkg_debian | Remove ufw
+- name: pkg | Remove ufw
   ansible.builtin.apt:
     name: ufw
     state: absent
     purge: true
   notify: Flush iptables
 
-- name: pkg_debian | Add Docker GPG apt Key
+- name: pkg | Add Docker GPG apt Key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: pkg_debian | Add Docker Repository
+- name: pkg | Add Docker Repository
   ansible.builtin.apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     state: present
 
-- name: pkg_debian | Install required packages
+- name: pkg | Install required packages
   ansible.builtin.apt:
     name: "{{ item }}"
     state: "{{ 'latest' if package_update | bool else 'present' }}"
