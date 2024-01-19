@@ -26,16 +26,16 @@ http {
     server {
         listen 0.0.0.0:443 ssl;
         http2  on;
-        server_name matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
+        server_name {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
 
-        ssl_certificate /etc/letsencrypt/live/*.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}.chain.crt;
-        ssl_certificate_key /etc/letsencrypt/keys/id_rsa.*.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
+        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }}.chain.crt;
+        ssl_certificate_key /etc/letsencrypt/keys/id_rsa.{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }};
 
         listen 8448 ssl default_server;
         listen [::]:8448 ssl default_server;
 
-        ssl_certificate /etc/letsencrypt/live/*.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}.chain.crt;
-        ssl_certificate_key /etc/letsencrypt/keys/id_rsa.*.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }};
+        ssl_certificate /etc/letsencrypt/live/{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }}.chain.crt;
+        ssl_certificate_key /etc/letsencrypt/keys/id_rsa.{{ lookup('hashi_vault', 'secret=kv/data/matrix:cert_domain') }};
 
         location / {
             return 403 '{"error": "Forbidden"}';
@@ -43,14 +43,15 @@ http {
         }
 
         location /.well-known/matrix/client {
-            return 200 '{"m.homeserver": {"base_url": "https://matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}, "org.matrix.msc3575.proxy": {"url": "https://matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}}';
+            return 200 '{"m.homeserver": {"base_url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"},
+                         "org.matrix.msc3575.proxy": {"url": "https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}}';
             default_type application/json;
             add_header Access-Control-Allow-Origin *;
         }
 
         location /.well-known/matrix/server {
             default_type application/json;
-            return 200 '{"m.server": "matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}';
+            return 200 '{"m.server": "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"}';
         }
 
         location ~ ^/(client/|_matrix/client/unstable/org.matrix.msc3575/sync) {

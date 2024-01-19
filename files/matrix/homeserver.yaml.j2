@@ -1,38 +1,30 @@
-﻿server_name: matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}
-pid_file: "/var/run/matrix-synapse.pid"
-public_baseurl: https://matrix.{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/
+﻿server_name: {{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}
+pid_file: "/data/homeserver.pid"
+public_baseurl: https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}/
 listeners:
   - port: 8008
     tls: false
     type: http
     x_forwarded: true
-    bind_addresses: ["0.0.0.0"]
-
     resources:
       - names: [client, federation]
         compress: false
 acme:
   enabled: false
-federation_ip_range_blacklist:
-  - "127.0.0.0/8"
-  - "10.0.0.0/8"
-  - "172.16.0.0/12"
-  - "192.168.0.0/16"
-  - "100.64.0.0/10"
-  - "169.254.0.0/16"
-  - "::1/128"
-  - "fe80::/64"
-  - "fc00::/7"
 database:
-  name: sqlite3
+  name: psycopg2
   args:
-    database: "/data/homeserver.db"
-rc_message:
-  per_second: 1
-  burst_count: 1000
-media_store_path: "/data/media"
+    user: {{ lookup('hashi_vault', 'secret=kv/data/matrix:db_user') }}
+    password: {{ lookup('hashi_vault', 'secret=kv/data/matrix:db_password') }}
+    database: synapse
+    host: db
+    cp_min: 5
+    cp_max: 10
+media_store_path: "/data/media_store"
 enable_registration: false
-registration_shared_secret: {{ lookup('hashi_vault', 'secret=kv/data/matrix:registration_secret') }}
+registration_shared_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:registration_shared_secret') }}"
+macaroon_secret_key: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:macaroon_secret_key') }}"
+form_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:form_secret') }}"
 signing_key_path: "/data/homeserver.signing.key"
 trusted_key_servers:
   - server_name: "matrix.org"
