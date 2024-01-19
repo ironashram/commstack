@@ -26,20 +26,15 @@ federation_ip_range_blacklist:
 database:
   name: sqlite3
   args:
-    database: /var/lib/matrix-synapse/homeserver.db
-log_config: "/etc/matrix-synapse/log.yaml"
+    database: "/data/homeserver.db"
 rc_message:
   per_second: 1
   burst_count: 1000
-media_store_path: "/var/lib/matrix-synapse/media"
+media_store_path: "/data/media"
 enable_registration: false
 registration_shared_secret: {{ lookup('hashi_vault', 'secret=kv/data/matrix:registration_secret') }}
-signing_key_path: "/etc/matrix-synapse/homeserver.signing.key"
+signing_key_path: "/data/homeserver.signing.key"
 trusted_key_servers:
   - server_name: "matrix.org"
-oidc_config:
-  user_mapping_provider:
-    config:
-      localpart_template: "{{ '{{ user.preferred_username }}' }}"
 report_stats: false
 suppress_key_server_warning: true

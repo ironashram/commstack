@@ -7,6 +7,7 @@
   loop:
     - nginx_conf
     - synapse_data
+    - synapse_data/media
 
 - name: matrix | Template nginx conf
   ansible.builtin.template:
@@ -18,14 +19,6 @@
   ansible.builtin.template:
     src: files/matrix/homeserver.yaml.j2
     dest: /docker/matrix/synapse_data/homeserver.yaml
-    mode: "0644"
-
-- name: matrix | Copy log.yaml
-  ansible.builtin.copy:
-    src: files/matrix/log.yaml
-    dest: /docker/matrix/synapse_data/log.yaml
-    owner: root
-    group: root
     mode: "0644"
 
 - name: matrix | Create homeserver.signing.key
