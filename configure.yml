@@ -11,6 +11,11 @@
         ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
         ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
         ansible_ssh_private_key_file: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:key') }}"
+      tags:
+        - packages
+        - iptables
+        - matrix
+        - mailserver
 
 - name: Configure Personal Services
   hosts: cloud_self_hosted
@@ -41,3 +46,12 @@
     - name: Flush iptables
       ansible.builtin.iptables:
         flush: true
+
+    - name: Matrix Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/matrix
+        state: absent
+
+    - name: Matrix Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/matrix

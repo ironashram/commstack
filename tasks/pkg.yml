@@ -29,3 +29,7 @@
     update_cache: true
   become: true
   loop: "{{ debian_base_packages }}"
+
+- name: pkg | Install python docker-compose
+  ansible.builtin.pip:
+    name: docker-compose

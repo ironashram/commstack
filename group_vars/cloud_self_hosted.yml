@@ -12,3 +12,4 @@ debian_base_packages:
   - gnupg
   - netfilter-persistent
   - python3-pip
+  - python3-docker

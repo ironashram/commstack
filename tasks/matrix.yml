@@ -4,6 +4,7 @@
     path: /docker/matrix/{{ item }}
     state: directory
     mode: "0755"
+    recurse: false
   loop:
     - nginx_conf
     - synapse_data
@@ -40,6 +41,14 @@
     group: root
     mode: "0644"
 
+- name: matrix | Add certbot renewal cronjob
+  ansible.builtin.cron:
+    name: "certbot renewal cronjob"
+    cron_file: certbot_cloudflare
+    job: "docker start matrix-certbot-1"
+    user: "root"
+    special_time: "daily"
+
 - name: matrix | Template docker-compose.yml
   ansible.builtin.template:
     src: files/matrix/docker-compose.yml.j2
@@ -47,3 +56,6 @@
     owner: root
     group: root
     mode: "0644"
+  notify:
+    - Matrix Compose Down
+    - Matrix Compose Up
