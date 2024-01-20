@@ -1,1 +1,10 @@
 ﻿---
+- name: mailserver | Create docker compose folders
+  ansible.builtin.file:
+    path: /docker/mail/{{ item }}
+    state: directory
+    mode: "0755"
+    recurse: false
+  loop:
+    - postfix_conf
+    - dovecot_conf
