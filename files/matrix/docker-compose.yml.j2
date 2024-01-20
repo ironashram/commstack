@@ -3,6 +3,7 @@
 services:
 
   nginx:
+    container_name: nginx
     image: "nginx:1.25.3"
     restart: "always"
     ports:
@@ -10,9 +11,10 @@ services:
       - "8448:8448"
     volumes:
       - /docker/matrix/nginx_conf/nginx.conf:/etc/nginx/nginx.conf
-      - /docker/matrix/synapse_data/certbot_etc:/etc/letsencrypt
+      - /docker/certbot/certbot_etc:/etc/letsencrypt
 
   synapse:
+    container_name: synapse
     image: "docker.io/matrixdotorg/synapse:v1.98.0"
     restart: unless-stopped
     environment:
@@ -20,9 +22,10 @@ services:
     volumes:
       - /docker/matrix/synapse_data:/data:rw
     depends_on:
-      - db
+      - synapse-db
 
-  db:
+  synapse-db:
+    container_name: synapse-db
     image: docker.io/postgres:16-alpine
     restart: unless-stopped
     environment:
@@ -34,6 +37,7 @@ services:
       - /docker/matrix/synapse_data/db:/var/lib/postgresql/data
 
   sliding-proxy:
+    container_name: sliding-proxy
     image: ghcr.io/matrix-org/sliding-sync:v0.99.14
     restart: unless-stopped
     environment:
@@ -44,6 +48,7 @@ services:
       - sliding-postgres
 
   sliding-postgres:
+    container_name: sliding-postgres
     image: docker.io/postgres:16-alpine
     restart: unless-stopped
     environment:
@@ -52,17 +57,3 @@ services:
       - "POSTGRES_DB=syncv3"
     volumes:
       - /docker/matrix/synapse_data/sliding_sync_db:/var/lib/postgresql/data
-
-  certbot:
-    image: certbot/dns-cloudflare:v2.8.0
-    volumes:
-      - /docker/matrix/synapse_data/certbot_etc:/etc/letsencrypt
-      - /docker/matrix/synapse_data/cloudflare.ini:/root/cloudflare.ini
-    command: >-
-      certonly --dns-cloudflare
-      --dns-cloudflare-credentials /root/cloudflare.ini
-      --dns-cloudflare-propagation-seconds 15
-      --email {{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_email') }}
-      --agree-tos --no-eff-email
-      --keep-until-expiring
-      -d {{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_domain_wildcard') }}

@@ -1,0 +1,18 @@
+﻿version: '3'
+
+services:
+
+  certbot:
+    container_name: certbot
+    image: certbot/dns-cloudflare:v2.8.0
+    volumes:
+      - /docker/certbot/certbot_etc:/etc/letsencrypt
+      - /docker/certbot/cloudflare.ini:/root/cloudflare.ini
+    command: >-
+      certonly --dns-cloudflare
+      --dns-cloudflare-credentials /root/cloudflare.ini
+      --dns-cloudflare-propagation-seconds 60
+      --email {{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_email') }}
+      --agree-tos --no-eff-email
+      --keep-until-expiring
+      -d "{{ lookup('hashi_vault', 'secret=kv/data/acme:base_domain') }},{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_domain_wildcard') }}"

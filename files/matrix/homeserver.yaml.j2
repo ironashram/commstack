@@ -17,7 +17,7 @@ database:
     user: {{ lookup('hashi_vault', 'secret=kv/data/matrix:db_user') }}
     password: {{ lookup('hashi_vault', 'secret=kv/data/matrix:db_password') }}
     database: synapse
-    host: db
+    host: synapse-db
     cp_min: 5
     cp_max: 10
 media_store_path: "/data/media_store"

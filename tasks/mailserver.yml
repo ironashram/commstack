@@ -6,5 +6,51 @@
     mode: "0755"
     recurse: false
   loop:
-    - postfix_conf
-    - dovecot_conf
+    - mail-data
+    - mail-state
+    - mail-logs
+    - config
+
+- name: mailserver | Template mailserver.env
+  ansible.builtin.template:
+    src: files/mailserver/mailserver.env.j2
+    dest: /docker/mail/mailserver.env
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Mailserver Compose Down
+    - Mailserver Compose Up
+
+- name: mailserver | Template docker-compose.yml
+  ansible.builtin.template:
+    src: files/mailserver/docker-compose.yml.j2
+    dest: /docker/mail/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Mailserver Compose Down
+    - Mailserver Compose Up
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: mailserver | Check Postfix Users
+  ansible.builtin.stat:
+    path: /docker/mail/config/postfix-accounts.cf
+  register: accounts
+
+- name: mailserver | Create Postfix Users
+  community.docker.docker_container_exec:
+    container: mailserver
+    argv:
+      - setup
+      - email
+      - add
+      - "{{ lookup('hashi_vault', 'secret=kv/data/mail:{{ item }}') }}"
+      - "{{ lookup('hashi_vault', 'secret=kv/data/mail:{{ item }}_password') }}"
+  loop:
+    - "admin"
+    - "user"
+  when: "not accounts.stat.exists"

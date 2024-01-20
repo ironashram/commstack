@@ -1,0 +1,38 @@
+﻿- name: certbot | Create docker compose folders
+  ansible.builtin.file:
+    path: /docker/certbot/{{ item }}
+    state: directory
+    mode: "0755"
+    recurse: false
+  loop:
+    - certbot_etc
+
+- name: certbot | Template cloudflare.ini
+  ansible.builtin.template:
+    src: files/certbot/cloudflare.ini.j2
+    dest: /docker/certbot/cloudflare.ini
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Certbot Compose Down
+    - Certbot Compose Up
+
+- name: certbot | Add certbot renewal cronjob
+  ansible.builtin.cron:
+    name: "certbot renewal cronjob"
+    cron_file: certbot_cloudflare
+    job: "docker start certbot"
+    user: "root"
+    special_time: "daily"
+
+- name: certbot | Template docker-compose.yml
+  ansible.builtin.template:
+    src: files/certbot/docker-compose.yml.j2
+    dest: /docker/certbot/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Certbot Compose Down
+    - Certbot Compose Up

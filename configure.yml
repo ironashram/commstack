@@ -14,6 +14,7 @@
       tags:
         - packages
         - iptables
+        - certbot
         - matrix
         - mailserver
 
@@ -34,6 +35,10 @@
       ansible.builtin.import_tasks: tasks/iptables.yml
       tags: iptables
 
+    - name: Configure Certbot
+      ansible.builtin.import_tasks: tasks/certbot.yml
+      tags: certbot
+
     - name: Configure Matrix
       ansible.builtin.import_tasks: tasks/matrix.yml
       tags: matrix
@@ -47,6 +52,15 @@
       ansible.builtin.iptables:
         flush: true
 
+    - name: Certbot Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/certbot
+        state: absent
+
+    - name: Certbot Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/certbot
+
     - name: Matrix Compose Down
       community.docker.docker_compose:
         project_src: /docker/matrix
@@ -55,3 +69,12 @@
     - name: Matrix Compose Up
       community.docker.docker_compose:
         project_src: /docker/matrix
+
+    - name: Mailserver Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/mail
+        state: absent
+
+    - name: Mailserver Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/mail
