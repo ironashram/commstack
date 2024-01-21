@@ -1,12 +1,13 @@
 # Mail/Matrix Server
-Contains automation and tooling to manage my own mail/matrix server.
-Automated SSL generation/renewal with Let'sencrypt via cerbot and Cloudflare DNS.
+This repo contains automation and tooling to manage my own mail/matrix server. <br>
+Automated SSL generation/renewal is included with Let'sencrypt CA via cerbot and Cloudflare DNS.
 
 ## Secrets
 
-All secrets are stored in a private Hashicorp Vault instance and fetched with ansible lookups at runtime, including the ansible host itself.<br>
-This helps to keep the code clean, also allows me to keep this repo public without security concerns.<br>
-Vault Authetication must be set via ENV variables before rurring the playbook.<br>
+All secrets are stored in a private Hashicorp Vault instance and fetched with ansible lookups at runtime. <br>
+The ansible inventory itself is generated at runtime using the `add_host` trick. <br>
+This keeps the code clean, allows me to make this repo public without security concerns. <br>
+Vault Authetication must be set via ENV variables before rurring the playbook.
 
 
 ## Ansible
@@ -27,4 +28,4 @@ ansible-playbook -i inventory.yml configure.yml
 https://www.ansible.com/ <br>
 https://www.vaultproject.io/ <br>
 https://github.com/element-hq/synapse <br>
-https://github.com/docker-mailserver/docker-mailserver <br>
+https://github.com/docker-mailserver/docker-mailserver
