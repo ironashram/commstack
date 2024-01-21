@@ -45,10 +45,10 @@
     - Matrix Compose Down
     - Matrix Compose Up
 
-- name: matrix | Template docker-compose.yml
+- name: matrix | Template docker-compose.yaml
   ansible.builtin.template:
-    src: files/matrix/docker-compose.yml.j2
-    dest: /docker/matrix/docker-compose.yml
+    src: files/matrix/docker-compose.yaml.j2
+    dest: /docker/matrix/docker-compose.yaml
     owner: root
     group: root
     mode: "0644"

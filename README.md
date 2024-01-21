@@ -14,12 +14,12 @@ Vault Authetication must be set via ENV variables before running the playbook, e
 
 Single Step
 ```
-ansible-playbook -i inventory.yml configure.yml --tags matrix
+ansible-playbook -i inventory.yaml configure.yaml --tags matrix
 ```
 
 Configure Everything
 ```
-ansible-playbook -i inventory.yml configure.yml
+ansible-playbook -i inventory.yaml configure.yaml
 ```
 
 

@@ -30,6 +30,8 @@
   async: "{{ ansible_timeout }}"
   poll: 0
   when: not ansible_check_mode
+  notify:
+    - Restart Docker
 
 - name: iptables | Apply ipv6 iptables rules
   community.general.iptables_state:
@@ -39,3 +41,5 @@
   async: "{{ ansible_timeout }}"
   poll: 0
   when: not ansible_check_mode
+  notify:
+    - Restart Docker
