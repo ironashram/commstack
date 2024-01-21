@@ -8,7 +8,7 @@ All secrets are stored in a private Hashicorp Vault instance and fetched with an
 Vault Authetication must be set via ENV variables before rurring the playbook.
 
 
-## Usage
+## Ansible
 
 Single Step
 ```
@@ -23,7 +23,7 @@ ansible-playbook -i inventory.yml configure.yml
 
 ## Credits
 
-https://www.ansible.com/
-https://www.vaultproject.io/
-https://github.com/element-hq/synapse
-https://github.com/docker-mailserver/docker-mailserver
+https://www.ansible.com/ <br>
+https://www.vaultproject.io/ <br>
+https://github.com/element-hq/synapse <br>
+https://github.com/docker-mailserver/docker-mailserver <br>
