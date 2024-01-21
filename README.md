@@ -6,8 +6,8 @@ Automated SSL generation/renewal is included with Let'sencrypt CA via cerbot and
 
 All secrets are stored in a private Hashicorp Vault instance and fetched with ansible lookups at runtime. <br>
 The ansible inventory itself is generated at runtime using the `add_host` trick. <br>
-This keeps the code clean, allows me to make this repo public without security concerns. <br>
-Vault Authetication must be set via ENV variables before rurring the playbook.
+This keeps the code clean, also allows me to make this repo public without security concerns. <br>
+Vault Authetication must be set via ENV variables before running the playbook, either by using a token or approle.
 
 
 ## Ansible
