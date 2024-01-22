@@ -4,6 +4,7 @@ public_baseurl: https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain')
 listeners:
   - port: 8008
     tls: false
+    bind_addresses: ['0.0.0.0']
     type: http
     x_forwarded: true
     resources:

@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yml
+      - UID=0
+      - GID=0
     volumes:
       - /docker/matrix/synapse_data:/data:rw
     depends_on:
