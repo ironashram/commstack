@@ -22,10 +22,10 @@
     - Mailserver Compose Down
     - Mailserver Compose Up
 
-- name: mailserver | Template docker-compose.yaml
+- name: mailserver | Template docker-compose.yml
   ansible.builtin.template:
-    src: files/mailserver/docker-compose.yaml.j2
-    dest: /docker/mail/docker-compose.yaml
+    src: files/mailserver/docker-compose.yml.j2
+    dest: /docker/mail/docker-compose.yml
     owner: root
     group: root
     mode: "0644"

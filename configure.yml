@@ -28,23 +28,23 @@
           - "{{ ansible_distribution }}"
 
     - name: Install Packages
-      ansible.builtin.import_tasks: tasks/pkg.yaml
+      ansible.builtin.import_tasks: tasks/pkg.yml
       tags: packages
 
     - name: Configure Iptables
-      ansible.builtin.import_tasks: tasks/iptables.yaml
+      ansible.builtin.import_tasks: tasks/iptables.yml
       tags: iptables
 
     - name: Configure Certbot
-      ansible.builtin.import_tasks: tasks/certbot.yaml
+      ansible.builtin.import_tasks: tasks/certbot.yml
       tags: certbot
 
     - name: Configure Matrix
-      ansible.builtin.import_tasks: tasks/matrix.yaml
+      ansible.builtin.import_tasks: tasks/matrix.yml
       tags: matrix
 
     - name: Configure Mail Server
-      ansible.builtin.import_tasks: tasks/mailserver.yaml
+      ansible.builtin.import_tasks: tasks/mailserver.yml
       tags: mailserver
 
   handlers:

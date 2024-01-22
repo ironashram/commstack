@@ -23,10 +23,10 @@
     - Matrix Compose Down
     - Matrix Compose Up
 
-- name: matrix | Template synapse homeserver.yaml
+- name: matrix | Template synapse homeserver.yml
   ansible.builtin.template:
-    src: files/matrix/homeserver.yaml.j2
-    dest: /docker/matrix/synapse_data/homeserver.yaml
+    src: files/matrix/homeserver.yml.j2
+    dest: /docker/matrix/synapse_data/homeserver.yml
     owner: root
     group: root
     mode: "0644"
@@ -45,10 +45,10 @@
     - Matrix Compose Down
     - Matrix Compose Up
 
-- name: matrix | Template docker-compose.yaml
+- name: matrix | Template docker-compose.yml
   ansible.builtin.template:
-    src: files/matrix/docker-compose.yaml.j2
-    dest: /docker/matrix/docker-compose.yaml
+    src: files/matrix/docker-compose.yml.j2
+    dest: /docker/matrix/docker-compose.yml
     owner: root
     group: root
     mode: "0644"

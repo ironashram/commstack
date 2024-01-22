@@ -26,10 +26,10 @@
     user: "root"
     special_time: "daily"
 
-- name: certbot | Template docker-compose.yaml
+- name: certbot | Template docker-compose.yml
   ansible.builtin.template:
-    src: files/certbot/docker-compose.yaml.j2
-    dest: /docker/certbot/docker-compose.yaml
+    src: files/certbot/docker-compose.yml.j2
+    dest: /docker/certbot/docker-compose.yml
     owner: root
     group: root
     mode: "0644"

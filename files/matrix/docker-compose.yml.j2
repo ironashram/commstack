@@ -18,7 +18,7 @@ services:
     image: "docker.io/matrixdotorg/synapse:v1.98.0"
     restart: unless-stopped
     environment:
-      - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+      - SYNAPSE_CONFIG_PATH=/data/homeserver.yml
     volumes:
       - /docker/matrix/synapse_data:/data:rw
     depends_on:
