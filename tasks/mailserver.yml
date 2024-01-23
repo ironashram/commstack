@@ -54,3 +54,33 @@
     - "admin"
     - "user"
   when: "not accounts.stat.exists"
+
+- name: mailserver | Check Postfix Alias
+  ansible.builtin.stat:
+    path: /docker/mail/config/postfix-virtual.cf
+  register: alias
+
+- name: mailserver | Create Postmaster Alias
+  community.docker.docker_container_exec:
+    container: mailserver
+    argv:
+      - setup
+      - alias
+      - add
+      - "postmaster@{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
+      - "{{ lookup('hashi_vault', 'secret=kv/data/mail:admin') }}"
+  when: "not alias.stat.exists"
+
+- name: mailserver | Check OpenDKIM
+  ansible.builtin.stat:
+    path: "/docker/mail/config/opendkim/keys/{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
+  register: opendkim
+
+- name: mailserver | Setup OpenDKIM
+  community.docker.docker_container_exec:
+    container: mailserver
+    argv:
+      - setup
+      - config
+      - dkim
+  when: "not opendkim.stat.exists"

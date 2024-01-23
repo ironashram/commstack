@@ -2,7 +2,7 @@
 
 services:
   mailserver:
-    image: ghcr.io/docker-mailserver/docker-mailserver:13.2.0
+    image: ghcr.io/docker-mailserver/docker-mailserver:13.3.0
     container_name: mailserver
     hostname: {{ lookup('hashi_vault', 'secret=kv/data/mail:hostname') }}
     env_file: mailserver.env
