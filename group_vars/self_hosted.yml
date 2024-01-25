@@ -1,0 +1,41 @@
+﻿# base packages
+package_update: true
+debian_base_packages:
+  - ca-certificates
+  - curl
+  - containerd.io
+  - docker-ce
+  - docker-ce-cli
+  - docker-buildx-plugin
+  - docker-compose-plugin
+  - git
+  - gnupg
+  - netfilter-persistent
+  - python3-pip
+  - python3-docker
+# mail server
+mail_host: "{{ lookup('hashi_vault', 'secret=kv/data/mail:hostname') }}"
+postfix_users:
+  admin:
+    email: "{{ lookup('hashi_vault', 'secret=kv/data/mail:admin') }}"
+    password: "{{ lookup('hashi_vault', 'secret=kv/data/mail:admin_password') }}"
+  user1:
+    email: "{{ lookup('hashi_vault', 'secret=kv/data/mail:user') }}"
+    password: "{{ lookup('hashi_vault', 'secret=kv/data/mail:user_password') }}"
+postfix_aliases:
+  postmaster:
+    alias: "postmaster@{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
+    email: "{{ lookup('hashi_vault', 'secret=kv/data/mail:admin') }}"
+opendkim_folder: "/docker/mail/config/opendkim/keys/{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
+# acme
+acme_base_domain: "{{ lookup('hashi_vault', 'secret=kv/data/acme:base_domain') }}"
+acme_certificate_email: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_email') }}"
+acme_certificate_domain_wildcard: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_domain_wildcard') }}"
+# matrix synapse
+matrix_domain: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"
+matrix_base_domain: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:base_domain') }}"
+matrix_db_user: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:db_user') }}"
+matrix_db_password: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:db_password') }}"
+matrix_registration_shared_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:registration_shared_secret') }}"
+matrix_macaroon_secret_key: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:macaroon_secret_key') }}"
+matrix_form_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:form_secret') }}"

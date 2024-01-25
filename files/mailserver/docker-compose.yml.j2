@@ -2,9 +2,9 @@
 
 services:
   mailserver:
-    image: ghcr.io/docker-mailserver/docker-mailserver:13.3.0
+    image: ghcr.io/docker-mailserver/docker-mailserver:13.3.1
     container_name: mailserver
-    hostname: {{ lookup('hashi_vault', 'secret=kv/data/mail:hostname') }}
+    hostname: {{ mail_host }}
     env_file: mailserver.env
     ports:
       - "25:25"    # SMTP
@@ -27,3 +27,7 @@ services:
       test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
       timeout: 3s
       retries: 0
+
+networks:
+  default:
+    enable_ipv6: true

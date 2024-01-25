@@ -59,3 +59,7 @@ services:
       - "POSTGRES_DB=syncv3"
     volumes:
       - /docker/matrix/synapse_data/sliding_sync_db:/var/lib/postgresql/data
+
+networks:
+  default:
+    enable_ipv6: true

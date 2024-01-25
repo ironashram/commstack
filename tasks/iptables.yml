@@ -13,6 +13,8 @@
     group: root
     mode: "0644"
     backup: true
+  notify:
+    - Apply ipv4 iptables rules
 
 - name: iptables | Copy ipv6 rules file
   ansible.builtin.copy:
@@ -22,24 +24,5 @@
     group: root
     mode: "0644"
     backup: true
-
-- name: iptables | Apply ipv4 iptables rules
-  community.general.iptables_state:
-    state: restored
-    path: /etc/iptables/rules.v4
-  async: "{{ ansible_timeout }}"
-  poll: 0
-  when: not ansible_check_mode
   notify:
-    - Restart Docker
-
-- name: iptables | Apply ipv6 iptables rules
-  community.general.iptables_state:
-    state: restored
-    path: /etc/iptables/rules.v6
-    ip_version: ipv6
-  async: "{{ ansible_timeout }}"
-  poll: 0
-  when: not ansible_check_mode
-  notify:
-    - Restart Docker
+    - Apply ipv6 iptables rules

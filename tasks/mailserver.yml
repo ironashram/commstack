@@ -48,12 +48,12 @@
       - setup
       - email
       - add
-      - "{{ lookup('hashi_vault', 'secret=kv/data/mail:{{ item }}') }}"
-      - "{{ lookup('hashi_vault', 'secret=kv/data/mail:{{ item }}_password') }}"
+      - "{{ item.email }}"
+      - "{{ item.password }}"
   loop:
-    - "admin"
-    - "user"
+    - "{{ postfix_users }}"
   when: "not accounts.stat.exists"
+  # no_log: true
 
 - name: mailserver | Check Postfix Alias
   ansible.builtin.stat:
@@ -67,13 +67,15 @@
       - setup
       - alias
       - add
-      - "postmaster@{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
-      - "{{ lookup('hashi_vault', 'secret=kv/data/mail:admin') }}"
+      - "{{ item.alias }}"
+      - "{{ item.email }}"
+  loop:
+    - "{{ postfix_aliases }}"
   when: "not alias.stat.exists"
 
 - name: mailserver | Check OpenDKIM
   ansible.builtin.stat:
-    path: "/docker/mail/config/opendkim/keys/{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
+    path: "{{ opendkim_folder }}"
   register: opendkim
 
 - name: mailserver | Setup OpenDKIM

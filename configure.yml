@@ -5,12 +5,8 @@
   tasks:
     - name: Add Hosts
       ansible.builtin.add_host:
-        name: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"
-        groups: cloud_self_hosted
-        ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
-        ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
-        ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
-        ansible_ssh_private_key_file: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:key') }}"
+        name: "{{ hostname_to_add }}"
+        groups: self_hosted
       tags:
         - packages
         - iptables
@@ -19,7 +15,7 @@
         - mailserver
 
 - name: Configure Personal Services
-  hosts: cloud_self_hosted
+  hosts: self_hosted
   gather_facts: true
   tasks:
     - name: Print Ansible Distribution
@@ -83,3 +79,22 @@
       ansible.builtin.systemd_service:
         name: docker.service
         state: restarted
+
+    - name: Apply ipv4 iptables rules
+      community.general.iptables_state:
+        state: restored
+        path: /etc/iptables/rules.v4
+      async: "{{ ansible_timeout }}"
+      poll: 0
+      notify:
+        - Restart Docker
+
+    - name: Apply ipv6 iptables rules
+      community.general.iptables_state:
+        state: restored
+        path: /etc/iptables/rules.v6
+        ip_version: ipv6
+      async: "{{ ansible_timeout }}"
+      poll: 0
+      notify:
+        - Restart Docker
