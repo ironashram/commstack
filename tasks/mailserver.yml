@@ -53,7 +53,7 @@
   loop:
     - "{{ postfix_users }}"
   when: "not accounts.stat.exists"
-  # no_log: true
+  no_log: true
 
 - name: mailserver | Check Postfix Alias
   ansible.builtin.stat:
