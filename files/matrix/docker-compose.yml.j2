@@ -31,8 +31,8 @@ services:
     image: docker.io/postgres:16-alpine
     restart: unless-stopped
     environment:
-      - POSTGRES_USER={{ lookup('hashi_vault', 'secret=kv/data/matrix:db_user') }}
-      - POSTGRES_PASSWORD={{ lookup('hashi_vault', 'secret=kv/data/matrix:db_password') }}
+      - POSTGRES_USER={{ matrix_db_user }}
+      - POSTGRES_PASSWORD={{ matrix_db_password }}
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --encoding=UTF-8 --lc-collate=C --lc-ctype=C
       - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
     volumes:
@@ -40,13 +40,15 @@ services:
 
   sliding-proxy:
     container_name: sliding-proxy
-    image: ghcr.io/matrix-org/sliding-sync:v0.99.14
-    restart: unless-stopped
+    image: ghcr.io/matrix-org/sliding-sync:v0.99.15
+    restart: always
     environment:
-      - "SYNCV3_SECRET={{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_secret') }}"
-      - "SYNCV3_SERVER=https://{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"
-      - "SYNCV3_DB=user=syncv3 dbname=syncv3 sslmode=disable host=sliding-postgres password={{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_db_password') }}"
+      - "SYNCV3_SECRET={{ matrix_sliding_sync_secret }}"
+      - "SYNCV3_SERVER=http://synapse:8008"
+      - "SYNCV3_BINDADDR=0.0.0.0:8009"
+      - "SYNCV3_DB=user=syncv3 dbname=syncv3 sslmode=disable host=sliding-postgres password={{ matrix_sliding_sync_db_password }}"
     depends_on:
+      - synapse
       - sliding-postgres
 
   sliding-postgres:
@@ -55,7 +57,7 @@ services:
     restart: unless-stopped
     environment:
       - "POSTGRES_USER=syncv3"
-      - "POSTGRES_PASSWORD={{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_db_password') }}"
+      - "POSTGRES_PASSWORD={{ matrix_sliding_sync_db_password }}"
       - "POSTGRES_DB=syncv3"
     volumes:
       - /docker/matrix/synapse_data/sliding_sync_db:/var/lib/postgresql/data
