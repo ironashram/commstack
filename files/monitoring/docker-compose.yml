@@ -34,7 +34,7 @@ services:
       - matrix_default
 
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.45.3
+    image: quay.io/prometheus/prometheus:v2.7.1
     container_name: prometheus
     restart: always
     volumes:
