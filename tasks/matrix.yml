@@ -20,10 +20,8 @@
     group: root
     mode: "0644"
   notify:
-    - Monitoring Compose Down
-    - Matrix Compose Down
-    - Matrix Compose Up
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: matrix | Template synapse homeserver.yml
   ansible.builtin.template:
@@ -33,10 +31,8 @@
     group: root
     mode: "0644"
   notify:
-    - Monitoring Compose Down
-    - Matrix Compose Down
-    - Matrix Compose Up
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: matrix | Template homeserver.signing.key
   ansible.builtin.template:
@@ -46,10 +42,8 @@
     group: root
     mode: "0644"
   notify:
-    - Monitoring Compose Down
-    - Matrix Compose Down
-    - Matrix Compose Up
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: matrix | Template docker-compose.yml
   ansible.builtin.template:
@@ -59,7 +53,5 @@
     group: root
     mode: "0644"
   notify:
-    - Monitoring Compose Down
-    - Matrix Compose Down
-    - Matrix Compose Up
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up

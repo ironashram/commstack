@@ -19,8 +19,8 @@
     group: root
     mode: "0644"
   notify:
-    - Mailserver Compose Down
-    - Mailserver Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: mailserver | Template docker-compose.yml
   ansible.builtin.template:
@@ -30,8 +30,8 @@
     group: root
     mode: "0644"
   notify:
-    - Mailserver Compose Down
-    - Mailserver Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers

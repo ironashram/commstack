@@ -1,4 +1,5 @@
-﻿- name: certbot | Create docker compose folders
+﻿---
+- name: certbot | Create docker compose folders
   ansible.builtin.file:
     path: /docker/certbot/{{ item }}
     state: directory
@@ -15,8 +16,8 @@
     group: root
     mode: "0644"
   notify:
-    - Certbot Compose Down
-    - Certbot Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: certbot | Add certbot renewal cronjob
   ansible.builtin.cron:
@@ -34,5 +35,5 @@
     group: root
     mode: "0644"
   notify:
-    - Certbot Compose Down
-    - Certbot Compose Up
+    - Docker Compose Down
+    - Docker Compose Up

@@ -5,7 +5,7 @@
   tasks:
     - name: Add Hosts
       ansible.builtin.add_host:
-        name: "{{ hostname_to_add }}"
+        name: "{{ dynamic_hostname }}"
         groups: self_hosted
       tags: ['packages', 'iptables', 'certbot', 'matrix', 'mailserver', 'monitoring']
 
@@ -13,11 +13,6 @@
   hosts: self_hosted
   gather_facts: true
   tasks:
-    - name: Print Ansible Distribution
-      ansible.builtin.debug:
-        msg:
-          - "{{ ansible_distribution }}"
-
     - name: Install Packages
       ansible.builtin.import_tasks: tasks/pkg.yml
       tags: packages
@@ -71,38 +66,21 @@
         name: docker.service
         state: restarted
 
-    - name: Certbot Compose Down
+    - name: Docker Compose Down
       community.docker.docker_compose:
-        project_src: /docker/certbot
+        project_src: /docker/{{ item }}
         state: absent
+      loop:
+        - certbot
+        - monitoring
+        - matrix
+        - mail
 
-    - name: Monitoring Compose Down
+    - name: Docker Compose Up
       community.docker.docker_compose:
-        project_src: /docker/monitoring
-        state: absent
-
-    - name: Matrix Compose Down
-      community.docker.docker_compose:
-        project_src: /docker/matrix
-        state: absent
-
-    - name: Mailserver Compose Down
-      community.docker.docker_compose:
-        project_src: /docker/mail
-        state: absent
-
-    - name: Certbot Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/certbot
-
-    - name: Matrix Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/matrix
-
-    - name: Mailserver Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/mail
-
-    - name: Monitoring Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/monitoring
+        project_src: /docker/{{ item }}
+      loop:
+        - certbot
+        - matrix
+        - monitoring
+        - mail

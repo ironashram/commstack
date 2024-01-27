@@ -20,8 +20,8 @@
     mode: "0644"
     backup: true
   notify:
-    - Monitoring Compose Down
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: monitoring | Copy datasource.yml
   ansible.builtin.copy:
@@ -32,8 +32,8 @@
     mode: "0644"
     backup: true
   notify:
-    - Monitoring Compose Down
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
 
 - name: monitoring | Template docker-compose.yml
   ansible.builtin.template:
@@ -43,5 +43,5 @@
     group: root
     mode: "0644"
   notify:
-    - Monitoring Compose Down
-    - Monitoring Compose Up
+    - Docker Compose Down
+    - Docker Compose Up
