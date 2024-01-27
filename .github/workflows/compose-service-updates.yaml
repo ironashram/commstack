@@ -11,7 +11,7 @@ permissions:
 
 jobs:
 
-  flow:
+  update-services:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
