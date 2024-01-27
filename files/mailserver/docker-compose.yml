@@ -4,7 +4,7 @@ services:
   mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:13.3.1
     container_name: mailserver
-    hostname: {{ mail_host }}
+    hostname: "{{ mail_host }}"
     env_file: mailserver.env
     ports:
       - "25:25"    # SMTP

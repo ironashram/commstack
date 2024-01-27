@@ -1,0 +1,36 @@
+﻿name: compose-service-updates
+
+on:
+  schedule:
+    - cron:  '0 7 * * SAT'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+
+  flow:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
+      packages: read
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+
+      - name: setup-git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: simple-compose-service-updates
+        uses: ironashram/simple-compose-service-updates@561276a481018f06ac2f6764824018b492b4aa93
+        with:
+          default_branch: 'master'
+          prs: 'generate'
+        env:
+          GH_TOKEN: ${{ github.token }}
