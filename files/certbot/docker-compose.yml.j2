@@ -4,7 +4,7 @@ services:
 
   certbot:
     container_name: certbot
-    image: certbot/dns-cloudflare:v2.8.0
+    image: docker.io/certbot/dns-cloudflare:v2.8.0
     volumes:
       - /docker/certbot/certbot_etc:/etc/letsencrypt
       - /docker/certbot/cloudflare.ini:/root/cloudflare.ini

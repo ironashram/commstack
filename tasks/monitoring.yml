@@ -1,0 +1,47 @@
+﻿---
+- name: monitoring | Create docker compose folders
+  ansible.builtin.file:
+    path: /docker/monitoring/{{ item }}
+    state: directory
+    mode: "0777"
+    recurse: false
+  loop:
+    - prometheus_data
+    - grafana/data
+    - grafana/dashboards
+    - grafana/datasources
+
+- name: monitoring | Copy prometheus.yml
+  ansible.builtin.copy:
+    src: files/monitoring/prometheus/prometheus.yml
+    dest: /docker/monitoring/prometheus.yml
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  notify:
+    - Monitoring Compose Down
+    - Monitoring Compose Up
+
+- name: monitoring | Copy datasource.yml
+  ansible.builtin.copy:
+    src: files/monitoring/grafana/datasource.yml
+    dest: /docker/monitoring/grafana/datasources/datasource.yml
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  notify:
+    - Monitoring Compose Down
+    - Monitoring Compose Up
+
+- name: monitoring | Template docker-compose.yml
+  ansible.builtin.template:
+    src: files/monitoring/docker-compose.yml.j2
+    dest: /docker/monitoring/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Monitoring Compose Down
+    - Monitoring Compose Up

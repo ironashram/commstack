@@ -41,3 +41,7 @@ matrix_macaroon_secret_key: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:mac
 matrix_form_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:form_secret') }}"
 matrix_sliding_sync_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_secret') }}"
 matrix_sliding_sync_db_password: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_db_password') }}"
+# monitoring
+grafana_user: "{{ lookup('hashi_vault', 'secret=kv/data/monitoring:grafana_user') }}"
+grafana_password: "{{ lookup('hashi_vault', 'secret=kv/data/monitoring:grafana_password') }}"
+grafana_domain: "{{ lookup('hashi_vault', 'secret=kv/data/monitoring:grafana_domain') }}"

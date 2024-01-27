@@ -7,12 +7,7 @@
       ansible.builtin.add_host:
         name: "{{ hostname_to_add }}"
         groups: self_hosted
-      tags:
-        - packages
-        - iptables
-        - certbot
-        - matrix
-        - mailserver
+      tags: ['packages', 'iptables', 'certbot', 'matrix', 'mailserver', 'monitoring']
 
 - name: Configure Personal Services
   hosts: self_hosted
@@ -43,42 +38,14 @@
       ansible.builtin.import_tasks: tasks/mailserver.yml
       tags: mailserver
 
+    - name: Configure Monitoring
+      ansible.builtin.import_tasks: tasks/monitoring.yml
+      tags: monitoring
+
   handlers:
     - name: Flush iptables
       ansible.builtin.iptables:
         flush: true
-
-    - name: Certbot Compose Down
-      community.docker.docker_compose:
-        project_src: /docker/certbot
-        state: absent
-
-    - name: Certbot Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/certbot
-
-    - name: Matrix Compose Down
-      community.docker.docker_compose:
-        project_src: /docker/matrix
-        state: absent
-
-    - name: Matrix Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/matrix
-
-    - name: Mailserver Compose Down
-      community.docker.docker_compose:
-        project_src: /docker/mail
-        state: absent
-
-    - name: Mailserver Compose Up
-      community.docker.docker_compose:
-        project_src: /docker/mail
-
-    - name: Restart Docker
-      ansible.builtin.systemd_service:
-        name: docker.service
-        state: restarted
 
     - name: Apply ipv4 iptables rules
       community.general.iptables_state:
@@ -98,3 +65,44 @@
       poll: 0
       notify:
         - Restart Docker
+
+    - name: Restart Docker
+      ansible.builtin.systemd_service:
+        name: docker.service
+        state: restarted
+
+    - name: Certbot Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/certbot
+        state: absent
+
+    - name: Monitoring Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/monitoring
+        state: absent
+
+    - name: Matrix Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/matrix
+        state: absent
+
+    - name: Mailserver Compose Down
+      community.docker.docker_compose:
+        project_src: /docker/mail
+        state: absent
+
+    - name: Certbot Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/certbot
+
+    - name: Matrix Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/matrix
+
+    - name: Mailserver Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/mail
+
+    - name: Monitoring Compose Up
+      community.docker.docker_compose:
+        project_src: /docker/monitoring

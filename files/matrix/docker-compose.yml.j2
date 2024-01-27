@@ -4,7 +4,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: "nginx:1.25.3"
+    image: docker.io/nginx:1.25.3
     restart: "always"
     ports:
       - "443:443"
@@ -15,12 +15,10 @@ services:
 
   synapse:
     container_name: synapse
-    image: "docker.io/matrixdotorg/synapse:v1.98.0"
+    image: docker.io/matrixdotorg/synapse:v1.98.0
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yml
-      - UID=0
-      - GID=0
     volumes:
       - /docker/matrix/synapse_data:/data:rw
     depends_on:
