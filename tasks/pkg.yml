@@ -12,6 +12,12 @@
     purge: true
   notify: Flush iptables
 
+- name: pkg | Remove snapd
+  ansible.builtin.apt:
+    name: snapd
+    state: absent
+    purge: true
+
 - name: pkg | Add Docker GPG apt Key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg

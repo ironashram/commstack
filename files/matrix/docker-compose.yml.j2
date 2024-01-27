@@ -8,7 +8,6 @@ services:
     restart: "always"
     ports:
       - "443:443"
-      - "8448:8448"
     volumes:
       - /docker/matrix/nginx_conf/nginx.conf:/etc/nginx/nginx.conf
       - /docker/certbot/certbot_etc:/etc/letsencrypt
@@ -23,6 +22,8 @@ services:
       - /docker/matrix/synapse_data:/data:rw
     depends_on:
       - synapse-db
+    expose:
+      - 8008
 
   synapse-db:
     container_name: synapse-db
@@ -35,6 +36,8 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
     volumes:
       - /docker/matrix/synapse_data/db:/var/lib/postgresql/data
+    expose:
+      - 5432
 
   sliding-proxy:
     container_name: sliding-proxy
@@ -48,6 +51,8 @@ services:
     depends_on:
       - synapse
       - sliding-postgres
+    expose:
+      - 8009
 
   sliding-postgres:
     container_name: sliding-postgres
@@ -59,6 +64,8 @@ services:
       - "POSTGRES_DB=syncv3"
     volumes:
       - /docker/matrix/synapse_data/sliding_sync_db:/var/lib/postgresql/data
+    expose:
+      - 5432
 
 networks:
   default:
