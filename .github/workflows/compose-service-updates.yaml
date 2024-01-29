@@ -28,7 +28,7 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: simple-compose-service-updates
-        uses: ironashram/simple-compose-service-updates@841ca72c8a782367f1f33366bc07345789dd50fd
+        uses: ironashram/simple-compose-service-updates@1ec3643942aef822bf6dc60e1a685ed68525d822
         with:
           default_branch: 'master'
           prs: 'generate'
