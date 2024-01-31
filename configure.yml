@@ -62,21 +62,13 @@
         name: docker.service
         state: restarted
 
-    - name: Docker Compose Down
-      community.docker.docker_compose:
-        project_src: /docker/{{ item }}
-        state: absent
-      loop:
-        - certbot
-        - monitoring
-        - matrix
-        - mail
-
     - name: Docker Compose Up
       community.docker.docker_compose:
         project_src: /docker/{{ item }}
+        state: present
+        recreate: smart
       loop:
         - certbot
-        - matrix
         - monitoring
+        - matrix
         - mail

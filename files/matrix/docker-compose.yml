@@ -11,6 +11,8 @@ services:
     volumes:
       - /docker/matrix/nginx_conf/nginx.conf:/etc/nginx/nginx.conf
       - /docker/certbot/certbot_etc:/etc/letsencrypt
+    networks:
+      - container_network
 
   synapse:
     container_name: synapse
@@ -24,6 +26,8 @@ services:
       - synapse-db
     expose:
       - 8008
+    networks:
+      - container_network
 
   synapse-db:
     container_name: synapse-db
@@ -38,6 +42,8 @@ services:
       - /docker/matrix/synapse_data/db:/var/lib/postgresql/data
     expose:
       - 5432
+    networks:
+      - container_network
 
   sliding-proxy:
     container_name: sliding-proxy
@@ -53,6 +59,8 @@ services:
       - sliding-postgres
     expose:
       - 8009
+    networks:
+      - container_network
 
   sliding-postgres:
     container_name: sliding-postgres
@@ -66,7 +74,10 @@ services:
       - /docker/matrix/synapse_data/sliding_sync_db:/var/lib/postgresql/data
     expose:
       - 5432
+    networks:
+      - container_network
 
 networks:
-  default:
-    enable_ipv6: true
+  container_network:
+    external: true
+    name: container_network

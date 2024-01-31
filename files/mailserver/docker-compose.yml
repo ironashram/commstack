@@ -27,7 +27,10 @@ services:
       test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
       timeout: 3s
       retries: 0
+    networks:
+      - container_network
 
 networks:
-  default:
-    enable_ipv6: true
+  container_network:
+    external: true
+    name: container_network

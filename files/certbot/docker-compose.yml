@@ -16,3 +16,10 @@ services:
       --agree-tos --no-eff-email
       --keep-until-expiring
       -d "{{ acme_base_domain }},{{ acme_certificate_domain_wildcard }}"
+    networks:
+      - container_network
+
+networks:
+  container_network:
+    name: container_network
+    enable_ipv6: true

@@ -16,7 +16,6 @@
     group: root
     mode: "0644"
   notify:
-    - Docker Compose Down
     - Docker Compose Up
 
 - name: certbot | Add certbot renewal cronjob
@@ -35,5 +34,4 @@
     group: root
     mode: "0644"
   notify:
-    - Docker Compose Down
     - Docker Compose Up

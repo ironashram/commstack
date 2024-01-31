@@ -20,7 +20,6 @@
     mode: "0644"
     backup: true
   notify:
-    - Docker Compose Down
     - Docker Compose Up
 
 - name: monitoring | Copy datasource.yml
@@ -32,7 +31,6 @@
     mode: "0644"
     backup: true
   notify:
-    - Docker Compose Down
     - Docker Compose Up
 
 - name: monitoring | Template docker-compose.yml
@@ -43,5 +41,4 @@
     group: root
     mode: "0644"
   notify:
-    - Docker Compose Down
     - Docker Compose Up
