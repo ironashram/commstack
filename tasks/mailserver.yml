@@ -33,9 +33,6 @@
     - Docker Compose Down
     - Docker Compose Up
 
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
-
 - name: mailserver | Check Postfix Users
   ansible.builtin.stat:
     path: /docker/mail/config/postfix-accounts.cf

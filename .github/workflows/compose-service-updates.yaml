@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
       packages: read
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@e7e449dced768f0201582e76e92398df44e85f4f # v4.1.1
         with:
           fetch-depth: '0'
 
@@ -28,7 +28,7 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: simple-compose-service-updates
-        uses: ironashram/simple-compose-service-updates@1ec3643942aef822bf6dc60e1a685ed68525d822
+        uses: sbe-arg/simple-compose-service-updates@3e2217b006920ac0991c7352993f4f9874a3280a # v1.1.0
         with:
           default_branch: 'master'
           prs: 'generate'

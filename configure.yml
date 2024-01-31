@@ -48,8 +48,6 @@
         path: /etc/iptables/rules.v4
       async: "{{ ansible_timeout }}"
       poll: 0
-      notify:
-        - Restart Docker
 
     - name: Apply ipv6 iptables rules
       community.general.iptables_state:
@@ -58,8 +56,6 @@
         ip_version: ipv6
       async: "{{ ansible_timeout }}"
       poll: 0
-      notify:
-        - Restart Docker
 
     - name: Restart Docker
       ansible.builtin.systemd_service:
