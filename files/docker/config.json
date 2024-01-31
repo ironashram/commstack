@@ -1,6 +1,7 @@
 ﻿{
     "experimental": true,
-    "ip6tables": true,
+    "ip6tables": false,
+    "iptables": false,
     "ipv6": true,
     "fixed-cidr-v6": "fd00::/80",
     "default-address-pools": [

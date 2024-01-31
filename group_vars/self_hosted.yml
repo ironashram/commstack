@@ -10,6 +10,7 @@ debian_base_packages:
   - docker-compose-plugin
   - git
   - gnupg
+  - iptables-persistent
   - netfilter-persistent
   - python3-pip
   - python3-docker
