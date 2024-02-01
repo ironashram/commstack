@@ -3,10 +3,20 @@
   ansible.builtin.file:
     path: /docker/matrix/{{ item }}
     state: directory
-    mode: "0777"
+    mode: "0755"
     recurse: false
   loop:
     - nginx_conf
+
+- name: matrix | Create synapse folders
+  ansible.builtin.file:
+    path: /docker/matrix/{{ item }}
+    state: directory
+    mode: "0755"
+    owner: 991
+    group: 991
+    recurse: false
+  loop:
     - synapse_data
     - synapse_data/db
     - synapse_data/media_store
