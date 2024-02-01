@@ -3,10 +3,20 @@
   ansible.builtin.file:
     path: /docker/monitoring/{{ item }}
     state: directory
-    mode: "0777"
+    mode: "0755"
     recurse: false
   loop:
     - prometheus_data
+
+- name: monitoring | Create grafana folders
+  ansible.builtin.file:
+    path: /docker/monitoring/{{ item }}
+    state: directory
+    mode: "0755"
+    owner: 472
+    group: 472
+    recurse: false
+  loop:
     - grafana/data
     - grafana/dashboards
     - grafana/datasources

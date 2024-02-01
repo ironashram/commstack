@@ -8,8 +8,12 @@ listeners:
     type: http
     x_forwarded: true
     resources:
-      - names: [client, federation]
+      - names: [client, metrics]
         compress: false
+  - port: 9000
+    type: metrics
+    bind_addresses: ['0.0.0.0']
+enable_metrics: true
 acme:
   enabled: false
 database:

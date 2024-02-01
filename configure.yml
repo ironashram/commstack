@@ -67,6 +67,7 @@
         project_src: /docker/{{ item }}
         state: present
         recreate: smart
+        restarted: true
       loop:
         - certbot
         - monitoring
