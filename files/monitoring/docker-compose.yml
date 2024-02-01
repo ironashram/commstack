@@ -1,6 +1,4 @@
-﻿version: '3'
-
-services:
+﻿services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:v1.7.0
     container_name: node-exporter
