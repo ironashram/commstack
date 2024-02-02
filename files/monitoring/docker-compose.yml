@@ -5,6 +5,7 @@
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
+      - '/var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro'
     command:
       - '--path.rootfs=/host'
       - '--collector.systemd'
@@ -12,6 +13,8 @@
       - '--collector.processes'
       - '--collector.cgroups'
     pid: host
+    security_opt:
+      - apparmor=unconfined
     network_mode: host
 
   cadvisor:
