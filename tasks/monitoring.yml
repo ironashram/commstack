@@ -40,10 +40,34 @@
   ansible.builtin.copy:
     src: files/monitoring/grafana/datasource.yml
     dest: /docker/monitoring/grafana/datasources/datasource.yml
-    owner: root
-    group: root
+    owner: 472
+    group: 472
     mode: "0644"
     backup: true
+  notify:
+    - Docker Compose Up
+
+- name: monitoring | Copy dashboard.yml
+  ansible.builtin.copy:
+    src: files/monitoring/grafana/dashboard.yml
+    dest: /docker/monitoring/grafana/dashboards/dashboard.yml
+    owner: 472
+    group: 472
+    mode: "0644"
+    backup: true
+  notify:
+    - Docker Compose Up
+
+
+- name: monitoring | Copy dashboards
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/docker/monitoring/grafana/dashboards/{{ item | basename }}"
+    owner: 472
+    group: 472
+    mode: "0644"
+  with_fileglob:
+    - "files/monitoring/grafana/dashboards/*.json"
   notify:
     - Docker Compose Up
 
