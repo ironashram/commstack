@@ -1,4 +1,8 @@
 ﻿---
+- name: iptables | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['iptables'] }}"
+
 - name: iptables | Create /etc/iptables
   ansible.builtin.file:
     path: /etc/iptables

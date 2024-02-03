@@ -62,14 +62,38 @@
         name: docker.service
         state: restarted
 
-    - name: Docker Compose Up
+    - name: Docker Compose Up - Certbot
       community.docker.docker_compose:
-        project_src: /docker/{{ item }}
+        project_src: /docker/certbot
         state: present
         recreate: smart
-        restarted: true
-      loop:
-        - certbot
-        - monitoring
-        - matrix
-        - mail
+        remove_orphans: true
+      when: "'certbot' in ansible_tags"
+      listen: "Docker Compose Up"
+
+    - name: Docker Compose Up - Monitoring
+      community.docker.docker_compose:
+        project_src: /docker/monitoring
+        state: present
+        recreate: smart
+        remove_orphans: true
+      when: "'monitoring' in ansible_tags"
+      listen: "Docker Compose Up"
+
+    - name: Docker Compose Up - Matrix
+      community.docker.docker_compose:
+        project_src: /docker/matrix
+        state: present
+        recreate: smart
+        remove_orphans: true
+      when: "'matrix' in ansible_tags"
+      listen: "Docker Compose Up"
+
+    - name: Docker Compose Up - Mail
+      community.docker.docker_compose:
+        project_src: /docker/mail
+        state: present
+        recreate: smart
+        remove_orphans: true
+      when: "'mailserver' in ansible_tags"
+      listen: "Docker Compose Up"

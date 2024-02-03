@@ -1,4 +1,8 @@
 ﻿---
+- name: certbot | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['certbot'] }}"
+
 - name: certbot | Create docker compose folders
   ansible.builtin.file:
     path: /docker/certbot/{{ item }}

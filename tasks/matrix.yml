@@ -1,4 +1,8 @@
 ﻿---
+- name: matrix | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['matrix'] }}"
+
 - name: matrix | Create docker compose folders
   ansible.builtin.file:
     path: /docker/matrix/{{ item }}

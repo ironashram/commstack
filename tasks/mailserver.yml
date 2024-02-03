@@ -1,4 +1,8 @@
 ﻿---
+- name: mailserver | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['mailserver'] }}"
+
 - name: mailserver | Create docker compose folders
   ansible.builtin.file:
     path: /docker/mail/{{ item }}
