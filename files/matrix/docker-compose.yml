@@ -4,13 +4,10 @@
     container_name: nginx
     image: docker.io/nginx:1.25.3
     restart: "always"
-    ports:
-      - "443:443"
     volumes:
       - /docker/matrix/nginx_conf/nginx.conf:/etc/nginx/nginx.conf
       - /docker/certbot/certbot_etc:/etc/letsencrypt
-    networks:
-      - container_network
+    network_mode: host
 
   synapse:
     container_name: synapse
@@ -22,8 +19,8 @@
       - /docker/matrix/synapse_data:/data:rw
     depends_on:
       - synapse-db
-    expose:
-      - 8008
+    ports:
+      - "8008:8008"
     networks:
       - container_network
 
@@ -55,8 +52,8 @@
     depends_on:
       - synapse
       - sliding-postgres
-    expose:
-      - 8009
+    ports:
+      - "8009:8009"
     networks:
       - container_network
 

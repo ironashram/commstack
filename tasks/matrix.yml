@@ -34,7 +34,6 @@
     group: root
     mode: "0644"
   notify:
-    - Docker Compose Down
     - Docker Compose Up
 
 - name: matrix | Template synapse homeserver.yml
