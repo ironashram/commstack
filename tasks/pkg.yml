@@ -18,6 +18,12 @@
     state: absent
     purge: true
 
+- name: pkg | Remove cloud-init
+  ansible.builtin.apt:
+    name: cloud-init
+    state: absent
+    purge: true
+
 - name: pkg | Add Docker GPG apt Key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
