@@ -25,9 +25,12 @@
     purge: true
 
 - name: pkg | Add Docker GPG apt Key
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+    dest: /etc/apt/trusted.gpg.d/docker.asc
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: pkg | Add Docker Repository
   ansible.builtin.apt_repository:
