@@ -8,6 +8,8 @@
     path: /docker/monitoring/{{ item }}
     state: directory
     mode: "0755"
+    owner: 65534
+    group: 65534
     recurse: false
   loop:
     - prometheus_data
