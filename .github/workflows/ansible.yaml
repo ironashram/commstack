@@ -16,7 +16,8 @@ jobs:
 
     - name: Set up Ansible
       run: |
-        pip install ansible
+        pip install ansible hvac
+        ansible-galaxy collection install ansible.posix
 
     - name: Ansible Playbook
       uses: dawidd6/action-ansible-playbook@v2.8.0
