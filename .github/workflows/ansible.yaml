@@ -2,7 +2,7 @@ name: Run Ansible Playbook
 
 on:
   push:
-    branches: [ "main" ]
+    branches: master
 
   workflow_dispatch:
 
