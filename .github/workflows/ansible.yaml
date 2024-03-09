@@ -17,7 +17,7 @@ jobs:
     - name: Set up Ansible
       run: |
         apt-get update
-        apt-get install -y ansible python-hvac
+        apt-get install -y ansible python3-hvac
         ansible-galaxy collection install community.general ansible.posix
 
     - name: Ansible Playbook
