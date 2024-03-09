@@ -17,6 +17,7 @@ jobs:
     - name: Set up Ansible
       run: |
         pip install ansible hvac
+        ansible-galaxy collection install community.general
         ansible-galaxy collection install ansible.posix
 
     - name: Ansible Playbook
