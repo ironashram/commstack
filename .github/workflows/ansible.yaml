@@ -1,0 +1,28 @@
+name: Run Ansible Playbook
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  ansible-playbook:
+    runs-on: [self-hosted, linux, X64, ashram]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Ansible Playbook
+      uses: dawidd6/action-ansible-playbook@v2.8.0
+      env:
+        VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+        VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+      with:
+        playbook: configure.yaml
+        directory: ./
+        options: |
+          -i inventory.yaml
+          --tags matrix
+          --check
