@@ -8,7 +8,7 @@ on:
 
 jobs:
   ansible-playbook:
-    runs-on: [self-hosted, linux, X64, mail-matrix-server]
+    runs-on: [self-hosted, linux, X64, default]
 
     steps:
     - name: Checkout
