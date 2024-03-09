@@ -20,9 +20,9 @@ jobs:
         VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
         VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
       with:
-        playbook: configure.yaml
+        playbook: configure.yml
         directory: ./
         options: |
-          -i inventory.yaml
+          -i inventory.yml
           --tags matrix
           --check
