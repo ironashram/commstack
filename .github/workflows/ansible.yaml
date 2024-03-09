@@ -16,9 +16,12 @@ jobs:
 
     - name: Set up Ansible
       run: |
-        apt-get update
-        apt-get install -y ansible python3-hvac
-        ansible-galaxy collection install community.general ansible.posix
+        # get pip directly and install ansible
+        curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+        python3 get-pip.py
+        pip install ansible hvac
+        ansible-galaxy collection install community.general
+        ansible-galaxy collection install ansible.posix
 
     - name: Ansible Playbook
       uses: dawidd6/action-ansible-playbook@v2.8.0
@@ -28,7 +31,7 @@ jobs:
       with:
         configuration: |
           [defaults]
-          collections_paths = /root/.ansible/collections
+          collections_path = /root/.ansible/collections
         playbook: configure.yml
         directory: ./
         options: |
