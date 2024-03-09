@@ -26,6 +26,9 @@ jobs:
         VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
         VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
       with:
+        configuration: |
+          [defaults]
+          collections_paths = /root/.ansible/collections
         playbook: configure.yml
         directory: ./
         options: |
