@@ -41,5 +41,3 @@ jobs:
         directory: ./
         options: |
           -i inventory.yml
-          --tags matrix
-          --check
