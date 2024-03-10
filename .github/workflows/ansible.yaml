@@ -26,6 +26,11 @@ jobs:
         ansible-galaxy collection install community.general
         ansible-galaxy collection install ansible.posix
 
+    - name: Set up SSH Agent
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
     - name: Ansible Playbook
       uses: dawidd6/action-ansible-playbook@v2.8.0
       env:
