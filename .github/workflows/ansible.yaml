@@ -8,7 +8,7 @@ on:
 
 jobs:
   ansible-playbook:
-    runs-on: [self-hosted, linux, X64, default]
+    runs-on: gha-runner-scale-set-mail-matrix-server
 
     steps:
     - name: Checkout
