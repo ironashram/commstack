@@ -63,7 +63,7 @@
         state: restarted
 
     - name: Docker Compose Up - Certbot
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /docker/certbot
         state: present
         recreate: smart
@@ -72,7 +72,7 @@
       listen: "Docker Compose Up"
 
     - name: Docker Compose Up - Monitoring
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /docker/monitoring
         state: present
         recreate: smart
@@ -81,7 +81,7 @@
       listen: "Docker Compose Up"
 
     - name: Docker Compose Up - Matrix
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /docker/matrix
         state: present
         recreate: smart
@@ -90,7 +90,7 @@
       listen: "Docker Compose Up"
 
     - name: Docker Compose Up - Mail
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /docker/mail
         state: present
         recreate: smart
