@@ -68,7 +68,7 @@ http {
 
         location /grafana/ {
             proxy_set_header Host $http_host;
-            proxy_pass http://localhost:3000/grafana/;
+            proxy_pass http://localhost:3000;
         }
 
         location /grafana/api/live/ {
@@ -76,7 +76,7 @@ http {
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection $connection_upgrade;
             proxy_set_header Host $http_host;
-            proxy_pass http://localhost:3000/grafana/;
+            proxy_pass http://localhost:3000;
         }
     }
 }
