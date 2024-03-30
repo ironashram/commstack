@@ -2371,7 +2371,7 @@
   },
   "timezone": "browser",
   "title": "Prometheus system",
-  "uid": "000000001a",
+  "uid": "000000001",
   "version": 1,
   "weekStart": ""
 }
