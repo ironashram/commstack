@@ -66,7 +66,7 @@
       community.docker.docker_compose_v2:
         project_src: /docker/certbot
         state: present
-        recreate: smart
+        recreate: auto
         remove_orphans: true
       when: "'certbot' in ansible_tags"
       listen: "Docker Compose Up"
@@ -75,7 +75,7 @@
       community.docker.docker_compose_v2:
         project_src: /docker/monitoring
         state: present
-        recreate: smart
+        recreate: auto
         remove_orphans: true
       when: "'monitoring' in ansible_tags"
       listen: "Docker Compose Up"
@@ -84,7 +84,7 @@
       community.docker.docker_compose_v2:
         project_src: /docker/matrix
         state: present
-        recreate: smart
+        recreate: auto
         remove_orphans: true
       when: "'matrix' in ansible_tags"
       listen: "Docker Compose Up"
@@ -93,7 +93,7 @@
       community.docker.docker_compose_v2:
         project_src: /docker/mail
         state: present
-        recreate: smart
+        recreate: auto
         remove_orphans: true
       when: "'mailserver' in ansible_tags"
       listen: "Docker Compose Up"
