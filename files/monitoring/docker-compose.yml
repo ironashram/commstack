@@ -1,6 +1,6 @@
 ﻿services:
   node_exporter:
-    image: quay.io/prometheus/node-exporter:v1.7.0
+    image: quay.io/prometheus/node-exporter:v1.8.0
     container_name: node-exporter
     restart: unless-stopped
     volumes:
