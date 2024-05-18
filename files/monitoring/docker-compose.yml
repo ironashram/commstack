@@ -52,7 +52,7 @@
       - "host.docker.internal:host-gateway"
 
   grafana:
-    image: docker.io/grafana/grafana:10.4.2
+    image: docker.io/grafana/grafana:11.0.0
     container_name: grafana
     restart: always
     volumes:
