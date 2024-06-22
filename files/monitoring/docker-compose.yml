@@ -32,7 +32,7 @@
       - container_network
 
   prometheus:
-    image: quay.io/prometheus/prometheus:v2.52.0
+    image: quay.io/prometheus/prometheus:v2.53.0
     container_name: prometheus
     restart: always
     volumes:
