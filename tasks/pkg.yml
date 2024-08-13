@@ -45,10 +45,6 @@
   become: true
   loop: "{{ debian_base_packages }}"
 
-- name: pkg | Install python docker-compose
-  ansible.builtin.pip:
-    name: docker-compose
-
 - name: pkg | Copy docker config.json
   ansible.builtin.copy:
     src: files/docker/config.json
