@@ -24,7 +24,6 @@
     - synapse_data
     - synapse_data/db
     - synapse_data/media_store
-    - synapse_data/sliding_sync_db
 
 - name: matrix | Template nginx conf
   ansible.builtin.template:

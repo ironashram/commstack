@@ -40,8 +40,7 @@ http {
         ssl_certificate_key /etc/letsencrypt/live/{{ matrix_base_domain }}/privkey.pem;
 
         location /.well-known/matrix/client {
-            return 200 '{"m.homeserver": {"base_url": "https://{{ matrix_domain }}"},
-                         "org.matrix.msc3575.proxy": {"url": "https://{{ matrix_domain }}"}}';
+            return 200 '{"m.homeserver": {"base_url": "https://{{ matrix_domain }}"}}';
             default_type application/json;
             add_header Access-Control-Allow-Origin *;
         }

@@ -40,8 +40,6 @@ matrix_db_password: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:db_password
 matrix_registration_shared_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:registration_shared_secret') }}"
 matrix_macaroon_secret_key: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:macaroon_secret_key') }}"
 matrix_form_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:form_secret') }}"
-matrix_sliding_sync_secret: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_secret') }}"
-matrix_sliding_sync_db_password: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:sliding_sync_db_password') }}"
 # monitoring
 grafana_user: "{{ lookup('hashi_vault', 'secret=kv/data/monitoring:grafana_user') }}"
 grafana_password: "{{ lookup('hashi_vault', 'secret=kv/data/monitoring:grafana_password') }}"

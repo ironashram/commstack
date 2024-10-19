@@ -40,38 +40,6 @@
     networks:
       - container_network
 
-  sliding-proxy:
-    container_name: sliding-proxy
-    image: ghcr.io/matrix-org/sliding-sync:v0.99.19
-    restart: always
-    environment:
-      - "SYNCV3_SECRET={{ matrix_sliding_sync_secret }}"
-      - "SYNCV3_SERVER=http://synapse:8008"
-      - "SYNCV3_BINDADDR=0.0.0.0:8009"
-      - "SYNCV3_DB=user=syncv3 dbname=syncv3 sslmode=disable host=sliding-postgres password={{ matrix_sliding_sync_db_password }}"
-    depends_on:
-      - synapse
-      - sliding-postgres
-    ports:
-      - "8009:8009"
-    networks:
-      - container_network
-
-  sliding-postgres:
-    container_name: sliding-postgres
-    image: docker.io/postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      - "POSTGRES_USER=syncv3"
-      - "POSTGRES_PASSWORD={{ matrix_sliding_sync_db_password }}"
-      - "POSTGRES_DB=syncv3"
-    volumes:
-      - /docker/matrix/synapse_data/sliding_sync_db:/var/lib/postgresql/data
-    expose:
-      - 5432
-    networks:
-      - container_network
-
 networks:
   container_network:
     external: true
