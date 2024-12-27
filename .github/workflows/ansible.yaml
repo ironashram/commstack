@@ -9,7 +9,11 @@ on:
 jobs:
   ansible-playbook:
     runs-on: gha-runner-scale-set-mail-matrix-server
-
+    container:
+      image: ubuntu:22.04
+    defaults:
+      run:
+        shell: bash
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -17,19 +21,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.12'
 
     - name: Set up Ansible
       run: |
-        python3.10 -m pip install --upgrade pip
-        pip3.10 install ansible hvac
+        python3.12 -m pip install --upgrade pip
+        pip3.12 install ansible hvac
         ansible-galaxy collection install community.general
         ansible-galaxy collection install ansible.posix
 
     - name: Install openssh-client
       run: |
-        sudo apt-get update
-        sudo apt-get install openssh-client -y
+        apt-get update
+        apt-get install openssh-client -y
 
     - name: Set up SSH Agent
       uses: webfactory/ssh-agent@v0.9.0
