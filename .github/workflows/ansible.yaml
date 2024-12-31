@@ -18,6 +18,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Set up ssh known hosts
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      env:
+        SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+
     - name: Set up ssh key
       run: |
         mkdir -p ~/.ssh
