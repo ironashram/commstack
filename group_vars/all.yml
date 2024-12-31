@@ -2,3 +2,4 @@
 ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
 dynamic_hostname: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:domain') }}"
+ansible_python_interpreter: auto_silent
