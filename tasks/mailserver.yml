@@ -71,6 +71,7 @@
   loop:
     - "{{ postfix_aliases }}"
   when: "not alias.stat.exists"
+  no_log: true
 
 - name: mailserver | Check OpenDKIM
   ansible.builtin.stat:

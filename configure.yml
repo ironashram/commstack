@@ -8,6 +8,7 @@
         name: "{{ dynamic_hostname }}"
         groups: self_hosted
       tags: ['packages', 'iptables', 'certbot', 'matrix', 'mailserver', 'monitoring']
+      changed_when: false
 
 - name: Configure Personal Services
   hosts: self_hosted
