@@ -60,7 +60,6 @@
   notify:
     - Docker Compose Up
 
-
 - name: monitoring | Copy dashboards
   ansible.builtin.copy:
     src: "{{ item }}"
