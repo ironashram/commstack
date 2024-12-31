@@ -1,4 +1,1 @@
-﻿ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
-ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
-ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
-ansible_python_interpreter: auto_silent
+﻿ansible_python_interpreter: auto_silent
