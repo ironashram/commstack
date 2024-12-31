@@ -5,7 +5,7 @@
   tasks:
     - name: Add Hosts
       ansible.builtin.add_host:
-        name: "{{ dynamic_hostname }}"
+        name: mail-matrix-server
         groups: self_hosted
       tags: ['packages', 'iptables', 'certbot', 'matrix', 'mailserver', 'monitoring']
       changed_when: false
