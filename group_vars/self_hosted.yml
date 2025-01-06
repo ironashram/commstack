@@ -3,7 +3,7 @@ ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
 ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
 # base packages
-package_update: true
+package_update: false
 debian_base_packages:
   - ca-certificates
   - curl
