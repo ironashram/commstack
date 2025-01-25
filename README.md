@@ -1,3 +1,5 @@
+[![Run Ansible Playbook](https://github.com/ironashram/mail-matrix-server/actions/workflows/ansible.yaml/badge.svg)](https://github.com/ironashram/mail-matrix-server/actions/workflows/ansible.yaml)
+
 # Mail/Matrix Server
 This repo contains automation and tooling to manage my own mail/matrix server. <br>
 Automated SSL generation/renewal is included with Let'sencrypt CA via cerbot and Cloudflare DNS.
