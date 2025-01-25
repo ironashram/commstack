@@ -10,7 +10,6 @@ on:
       - 'tasks/**'
       - configure.yml
       - inventory.yml
-
   workflow_dispatch:
 
 jobs:
