@@ -2,7 +2,7 @@
 
   nginx:
     container_name: nginx
-    image: docker.io/nginx:1.27.1
+    image: docker.io/nginx:1.27.3
     restart: "always"
     volumes:
       - /docker/matrix/nginx_conf/nginx.conf:/etc/nginx/nginx.conf
@@ -26,7 +26,7 @@
 
   synapse-db:
     container_name: synapse-db
-    image: docker.io/postgres:17.2
+    image: docker.io/postgres:16.6
     restart: unless-stopped
     environment:
       - POSTGRES_USER={{ matrix_db_user }}
