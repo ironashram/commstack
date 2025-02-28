@@ -1,4 +1,6 @@
-﻿version: 2
+﻿# Set update schedule for GitHub Actions
+
+version: 2
 enable-beta-ecosystems: true
 updates:
   - package-ecosystem: "github-actions"
