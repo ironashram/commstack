@@ -9,6 +9,21 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "docker-compose"
-    directory: "/"
+    directory: "files/certbot"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "docker-compose"
+    directory: "files/mailserver"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "docker-compose"
+    directory: "files/matrix"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "docker-compose"
+    directory: "files/monitoring"
     schedule:
       interval: "daily"
