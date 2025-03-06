@@ -1,0 +1,22 @@
+name: Full Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'ansible/configure.yml'
+      - 'ansible/inventory.yml'
+      - 'ansible/group_vars/**'
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/ansible-base.yml
+    with:
+      tags: certbot,packages,monitoring,matrix,iptables,mailserver
+    secrets:
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}

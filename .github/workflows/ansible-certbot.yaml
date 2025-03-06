@@ -1,0 +1,21 @@
+name: Deploy Certbot
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'ansible/files/certbot/**'
+      - 'ansible/tasks/certbot.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/ansible-base.yml
+    with:
+      tags: certbot
+    secrets:
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}

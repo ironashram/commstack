@@ -1,0 +1,21 @@
+name: Deploy Mail Server
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'ansible/files/mailserver/**'
+      - 'ansible/tasks/mailserver.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/ansible-base.yml
+    with:
+      tags: mailserver
+    secrets:
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}

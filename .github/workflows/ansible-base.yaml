@@ -1,0 +1,46 @@
+name: Ansible Base Workflow
+
+on:
+  workflow_call:
+    inputs:
+      tags:
+        required: true
+        type: string
+        description: 'Ansible tags to run'
+    secrets:
+      SSH_KNOWN_HOSTS:
+        required: true
+      SSH_PRIVATE_KEY:
+        required: true
+      VAULT_ADDR:
+        required: true
+      VAULT_TOKEN:
+        required: true
+
+jobs:
+  ansible-deploy:
+    runs-on: gha-runner-scale-set-mail-matrix-server
+    container:
+      image: quay.io/m1k_cloud/automation_docker_image:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up ssh
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+          ssh-add -q ~/.ssh/id_rsa
+        env:
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook -i inventory.yml configure.yml --tags="${{ inputs.tags }}"
+        working-directory: ansible
+        env:
+          ANSIBLE_FORCE_COLOR: "True"
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
