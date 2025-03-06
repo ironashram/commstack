@@ -11,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    uses: ./.github/workflows/ansible-base.yml
+    uses: ./.github/workflows/ansible-base.yaml
     with:
       tags: monitoring
     secrets:
