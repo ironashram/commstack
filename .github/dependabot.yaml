@@ -9,21 +9,21 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "docker-compose"
-    directory: "files/certbot"
+    directory: "ansible/files/certbot"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker-compose"
-    directory: "files/mailserver"
+    directory: "ansible/files/mailserver"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker-compose"
-    directory: "files/matrix"
+    directory: "ansible/files/matrix"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker-compose"
-    directory: "files/monitoring"
+    directory: "ansible/files/monitoring"
     schedule:
       interval: "weekly"
