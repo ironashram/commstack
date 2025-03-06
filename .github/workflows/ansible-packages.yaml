@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - ansible/tasks/pkg,yml
+      - 'ansible/tasks/pkg,yml'
   workflow_dispatch:
 
 jobs:
