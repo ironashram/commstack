@@ -1,2 +1,2 @@
 ﻿*.yml linguist-detectable=true
-*.yml linguist-language=YAML
+*.yml linguist-language=Ansible
