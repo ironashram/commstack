@@ -12,10 +12,10 @@
   loop:
     - certbot_etc
 
-- name: certbot | Template cloudflare.ini
+- name: certbot | Template hetzner.ini
   ansible.builtin.template:
-    src: files/certbot/cloudflare.ini.j2
-    dest: /docker/certbot/cloudflare.ini
+    src: files/certbot/hetzner.ini.j2
+    dest: /docker/certbot/hetzner.ini
     owner: root
     group: root
     mode: "0644"
@@ -25,7 +25,7 @@
 - name: certbot | Add certbot renewal cronjob
   ansible.builtin.cron:
     name: "certbot renewal cronjob"
-    cron_file: certbot_cloudflare
+    cron_file: certbot_hetzner
     job: "docker start certbot"
     user: "root"
     special_time: "daily"

@@ -10,7 +10,7 @@
 
 # Mail/Matrix Server
 This repo contains automation and tooling to manage my own mail/matrix server. <br>
-Automated SSL generation/renewal is included with Let'sencrypt CA via cerbot and Cloudflare DNS.
+Automated SSL generation/renewal is included with Let'sencrypt CA via cerbot and Hetzner DNS.
 
 ## Secrets
 
