@@ -18,7 +18,7 @@
     dest: /docker/certbot/hetzner.ini
     owner: root
     group: root
-    mode: "0644"
+    mode: "0600"
   notify:
     - Docker Compose Up
 
