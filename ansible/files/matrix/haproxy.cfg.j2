@@ -14,7 +14,7 @@ defaults
     timeout server  50000
 
 frontend matrix_frontend
-    bind *:443 ssl crt /usr/local/etc/certs/live/{{ matrix_base_domain }}/fullchain.pem
+    bind *:443 ssl crt /usr/local/etc/certs/fullchain.pem
     http-request set-header X-Forwarded-Proto https
 
     acl host_matrix hdr(host) -i {{ matrix_domain }}

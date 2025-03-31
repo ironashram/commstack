@@ -6,7 +6,8 @@
     restart: "always"
     volumes:
       - /docker/matrix/haproxy_conf:/usr/local/etc/haproxy
-      - /docker/certbot/certbot_etc:/usr/local/etc/certs
+      - /docker/certbot/certbot_etc/live/{{ matrix_base_domain }}/fullchain.pem:/usr/local/etc/certs/fullchain.pem:ro
+      - /docker/certbot/certbot_etc/live/{{ matrix_base_domain }}/privkey.pem:/usr/local/etc/certs/fullchain.pem.key:ro
     network_mode: host
     user: root
 
