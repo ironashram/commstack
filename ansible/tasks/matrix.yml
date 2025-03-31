@@ -10,7 +10,7 @@
     mode: "0755"
     recurse: false
   loop:
-    - nginx_conf
+    - haproxy_conf
 
 - name: matrix | Create synapse folders
   ansible.builtin.file:
@@ -62,5 +62,5 @@
     owner: root
     group: root
     mode: "0644"
-  notify:
-    - Docker Compose Up
+  #notify:
+  #  - Docker Compose Up

@@ -35,11 +35,13 @@ backend well_known_client
     http-response set-header Access-Control-Allow-Origin "*"
     http-response set-header Content-Type "application/json"
     http-response return status 200 content-type "application/json" string '{"m.homeserver": {"base_url": "https://{{ matrix_domain }}"}}'
+    server dummy_client 127.0.0.1:80 check disabled
 
 backend well_known_server
     http-request set-header Host {{ matrix_domain }}
     http-response set-header Content-Type "application/json"
     http-response return status 200 content-type "application/json" string '{"m.server": "{{ matrix_domain }}"}'
+    server dummy_server 127.0.0.1:80 check disabled
 
 backend matrix_synapse
     server matrix localhost:8008 check

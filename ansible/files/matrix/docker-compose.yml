@@ -2,12 +2,13 @@
 
   haproxy:
     container_name: haproxy
-    image: docker.io/haproxy:2.9.15-bookworm
+    image: docker.io/haproxy:3.1.6-bookworm
     restart: "always"
     volumes:
       - /docker/matrix/haproxy_conf:/usr/local/etc/haproxy
       - /docker/certbot/certbot_etc:/usr/local/etc/certs
     network_mode: host
+    user: root
 
   synapse:
     container_name: synapse
