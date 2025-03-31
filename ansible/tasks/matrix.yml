@@ -10,7 +10,7 @@
     mode: "0755"
     recurse: false
   loop:
-    - nginx_conf
+    - haproxy_conf
 
 - name: matrix | Create synapse folders
   ansible.builtin.file:
@@ -25,10 +25,10 @@
     - synapse_data/db
     - synapse_data/media_store
 
-- name: matrix | Template nginx conf
+- name: matrix | Template haproxy conf
   ansible.builtin.template:
-    src: files/matrix/nginx.conf.j2
-    dest: /docker/matrix/nginx_conf/nginx.conf
+    src: files/matrix/haproxy.cfg.j2
+    dest: /docker/matrix/haproxy_conf/haproxy.cfg
     owner: root
     group: root
     mode: "0644"
