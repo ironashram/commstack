@@ -62,5 +62,5 @@
     owner: root
     group: root
     mode: "0644"
-  #notify:
-  #  - Docker Compose Up
+  notify:
+    - Docker Compose Up
