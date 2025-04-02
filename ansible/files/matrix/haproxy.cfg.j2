@@ -22,7 +22,7 @@ frontend stats
     stats auth {{ haproxy_user }}:{{ haproxy_password }}
     stats admin if TRUE
 
-frontend matrix_frontend
+frontend https_frontend
     bind *:443 ssl crt /usr/local/etc/certs/fullchain.pem
 
     http-request set-header X-Forwarded-Proto https
@@ -38,8 +38,8 @@ frontend matrix_frontend
     use_backend well_known_client if path_well_known_client
     use_backend well_known_server if path_well_known_server
     use_backend matrix_synapse if host_matrix path_matrix
-    use_backend grafana_backend if host_grafana path_grafana
-    use_backend grafana_ws_backend if host_grafana path_grafana_ws
+    use_backend grafana if host_grafana path_grafana
+    use_backend grafana_ws if host_grafana path_grafana_ws
 
     default_backend no_backend
 
@@ -60,12 +60,12 @@ backend matrix_synapse
     http-response set-header X-Frame-Options SAMEORIGIN
     option httpchk HEAD /_matrix/client/versions
 
-backend grafana_backend
+backend grafana
     server grafana localhost:3000 check
     http-request set-header Host %[req.hdr(host)]
     option forwardfor
 
-backend grafana_ws_backend
+backend grafana_ws
     server grafana_ws localhost:3000 check
     http-request set-header Host %[req.hdr(host)]
     option forwardfor
