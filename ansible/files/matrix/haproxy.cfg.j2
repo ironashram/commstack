@@ -33,13 +33,11 @@ frontend https_frontend
     acl path_well_known_client path /.well-known/matrix/client
     acl path_well_known_server path /.well-known/matrix/server
     acl path_grafana path_beg /grafana/
-    acl path_grafana_ws path_beg /grafana/api/live/
 
     use_backend well_known_client if path_well_known_client
     use_backend well_known_server if path_well_known_server
     use_backend matrix_synapse if host_matrix path_matrix
     use_backend grafana if host_grafana path_grafana
-    use_backend grafana_ws if host_grafana path_grafana_ws
 
     default_backend no_backend
 
@@ -64,15 +62,6 @@ backend grafana
     server grafana localhost:3000 check
     http-request set-header Host %[req.hdr(host)]
     option forwardfor
-
-backend grafana_ws
-    server grafana_ws localhost:3000 check
-    http-request set-header Host %[req.hdr(host)]
-    option forwardfor
-    option http-server-close
-    option http-pretend-keepalive
-    http-request set-header Upgrade %[req.hdr(Upgrade)]
-    http-request set-header Connection %[req.hdr(Connection)]
 
 backend no_backend
     http-request return status 401 content-type "application/json" string '{"error": "Unauthorized"}'
