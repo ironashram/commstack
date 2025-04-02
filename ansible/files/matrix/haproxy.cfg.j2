@@ -41,6 +41,8 @@ frontend matrix_frontend
     use_backend grafana_backend if host_grafana path_grafana
     use_backend grafana_ws_backend if host_grafana path_grafana_ws
 
+    default_backend no_backend
+
 backend well_known_client
     http-request set-header Host {{ matrix_domain }}
     http-request return status 200 content-type "application/json" hdr "Access-Control-Allow-Origin" "*" string '{"m.homeserver": {"base_url": "https://{{ matrix_domain }}"}}'
@@ -71,3 +73,6 @@ backend grafana_ws_backend
     option http-pretend-keepalive
     http-request set-header Upgrade %[req.hdr(Upgrade)]
     http-request set-header Connection %[req.hdr(Connection)]
+
+backend no_backend
+    http-request return status 401 content-type "application/json" string '{"error": "Unauthorized"}'
