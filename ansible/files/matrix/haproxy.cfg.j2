@@ -14,7 +14,8 @@ defaults
     timeout server  50000
 
 frontend stats
-    bind *:444
+    mode http
+    bind *:444 ssl crt /usr/local/etc/certs/fullchain.pem
     stats enable
     stats uri /
     stats refresh 10s
