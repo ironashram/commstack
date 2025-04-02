@@ -13,12 +13,16 @@ defaults
     timeout client  50000
     timeout server  50000
 
-frontend matrix_frontend
-    bind *:443 ssl crt /usr/local/etc/certs/fullchain.pem
+frontend stats
+    bind *:444
     stats enable
     stats uri /
     stats refresh 10s
     stats auth {{ haproxy_user }}:{{ haproxy_password }}
+    stats admin if TRUE
+
+frontend matrix_frontend
+    bind *:443 ssl crt /usr/local/etc/certs/fullchain.pem
 
     http-request set-header X-Forwarded-Proto https
 

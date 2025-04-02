@@ -14,6 +14,7 @@ COMMIT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT -m comment --comment "Ansble Managed Rule"
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 444 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 465 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 587 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 993 -j ACCEPT -m comment --comment "Ansble Managed Rule"
