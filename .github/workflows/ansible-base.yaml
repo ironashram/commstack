@@ -19,7 +19,7 @@ on:
 
 jobs:
   ansible-deploy:
-    runs-on: gha-runner-scale-set-mail-matrix-server
+    runs-on: gha-runner-scale-set-commstack
     container:
       image: quay.io/m1k_cloud/automation_docker_image:latest
     steps:

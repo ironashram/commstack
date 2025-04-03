@@ -5,9 +5,17 @@
   tasks:
     - name: Add Hosts
       ansible.builtin.add_host:
-        name: mail-matrix-server
+        name: commstack
         groups: self_hosted
-      tags: ['packages', 'iptables', 'certbot', 'matrix', 'mailserver', 'monitoring']
+      tags:
+        [
+          "packages",
+          "iptables",
+          "certbot",
+          "matrix",
+          "mailserver",
+          "monitoring",
+        ]
       changed_when: false
 
 - name: Configure Personal Services
