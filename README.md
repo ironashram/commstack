@@ -11,7 +11,7 @@
 # CommStack
 
 <p align="left">
-  <img src="assets/commstack.png" alt="CommStack ScreenShot" width="1000">
+  <img src="assets/commstack.png" alt="CommStack ScreenShot" width="800">
 </p>
 
 This repo contains automation and tooling to manage my own mail/matrix server. <br>
