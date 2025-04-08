@@ -14,7 +14,7 @@ defaults
     timeout server  50000
 
 frontend stats
-    bind *:444 ssl crt /usr/local/etc/certs/fullchain.pem
+    bind *:444,[::]:444 ssl crt /usr/local/etc/certs/fullchain.pem
     stats enable
     stats uri /
     stats refresh 10s
@@ -22,11 +22,11 @@ frontend stats
     stats admin if TRUE
 
 frontend http_frontend
-    bind *:80
+    bind *:80,[::]:80
     http-request redirect scheme https code 301
 
 frontend https_frontend
-    bind *:443 ssl crt /usr/local/etc/certs/fullchain.pem alpn h2,http/1.1
+    bind *:443,[::]:443 ssl crt /usr/local/etc/certs/fullchain.pem alpn h2,http/1.1
     http-request set-header X-Forwarded-Proto https
     http-request set-header X-Forwarded-For %[src]
 
@@ -45,7 +45,7 @@ frontend https_frontend
     default_backend no_backend
 
 frontend matrix-federation
-    bind *:8448 ssl crt /usr/local/etc/certs/fullchain.pem alpn h2,http/1.1
+    bind *:8448,[::]:8448 ssl crt /usr/local/etc/certs/fullchain.pem alpn h2,http/1.1
     http-request set-header X-Forwarded-Proto https
     http-request set-header X-Forwarded-For %[src]
 
