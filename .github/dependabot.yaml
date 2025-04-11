@@ -1,4 +1,4 @@
-﻿# Set update schedule for GitHub Actions
+# Set update schedule for GitHub Actions
 
 version: 2
 enable-beta-ecosystems: true
@@ -7,23 +7,33 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "saturday"
+      time: "07:00"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/certbot"
     schedule:
       interval: "weekly"
+      day: "saturday"
+      time: "07:00"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/mailserver"
     schedule:
       interval: "weekly"
+      day: "saturday"
+      time: "07:00"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/matrix"
     schedule:
       interval: "weekly"
+      day: "saturday"
+      time: "07:00"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/monitoring"
     schedule:
       interval: "weekly"
+      day: "saturday"
+      time: "07:00"
