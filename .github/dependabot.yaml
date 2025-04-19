@@ -5,34 +5,24 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "07:00"
+      interval: "daily"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/certbot"
     schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "07:00"
+      interval: "daily"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/mailserver"
     schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "07:00"
+      interval: "daily"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/matrix"
     schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "07:00"
+      interval: "daily"
 
   - package-ecosystem: "docker-compose"
     directory: "ansible/files/monitoring"
     schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "07:00"
+      interval: "daily"
