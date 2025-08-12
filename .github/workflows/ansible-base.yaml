@@ -24,7 +24,7 @@ jobs:
       image: ghcr.io/ironashram/toolbox:latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up ssh
         run: |
