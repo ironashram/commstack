@@ -1,5 +1,4 @@
 ﻿services:
-
   haproxy:
     container_name: haproxy
     image: docker.io/haproxy:3.2.5
@@ -36,7 +35,7 @@
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --encoding=UTF-8 --lc-collate=C --lc-ctype=C
       - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
     volumes:
-      - /docker/matrix/synapse_data/db:/var/lib/postgresql/data
+      - /docker/matrix/synapse_data/db:/var/lib/postgresql
     expose:
       - 5432
     networks:
