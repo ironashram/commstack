@@ -12,7 +12,7 @@
 
   synapse:
     container_name: synapse
-    image: docker.io/matrixdotorg/synapse:v1.138.2
+    image: docker.io/matrixdotorg/synapse:v1.139.0
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yml
