@@ -1,16 +1,15 @@
 ﻿services:
-
   certbot:
     container_name: certbot
-    image: docker.io/gbeine/dns-hetzner:v2.0.1
+    image: ghcr.io/ironashram/certbot-dns-hetzner-cloud:0.1
     volumes:
       - /docker/certbot/certbot_etc:/etc/letsencrypt
       - /docker/certbot/hetzner.ini:/root/hetzner.ini
     command: >-
       certonly
-      --authenticator dns-hetzner
-      --dns-hetzner-credentials /root/hetzner.ini
-      --dns-hetzner-propagation-seconds 60
+      --authenticator dns-hetzner-cloud
+      --dns-hetzner-cloud-credentials /root/hetzner.ini
+      --dns-hetzner-cloud-propagation-seconds 60
       --email {{ acme_certificate_email }}
       --agree-tos --no-eff-email
       --keep-until-expiring
