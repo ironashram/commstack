@@ -9,7 +9,7 @@
       certonly
       --authenticator dns-hetzner-cloud
       --dns-hetzner-cloud-credentials /root/hetzner.ini
-      --dns-hetzner-cloud-propagation-seconds 60
+      --dns-hetzner-cloud-propagation-seconds 120
       --email {{ acme_certificate_email }}
       --agree-tos --no-eff-email
       --keep-until-expiring
