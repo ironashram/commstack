@@ -27,7 +27,7 @@
 
   synapse-db:
     container_name: synapse-db
-    image: docker.io/postgres:18.0
+    image: docker.io/postgres:18.1
     restart: unless-stopped
     environment:
       - POSTGRES_USER={{ matrix_db_user }}
