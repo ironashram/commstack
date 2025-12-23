@@ -1,7 +1,7 @@
 ﻿services:
   haproxy:
     container_name: haproxy
-    image: docker.io/haproxy:3.3.0
+    image: docker.io/haproxy:3.3.1
     restart: "always"
     volumes:
       - /docker/matrix/haproxy_conf:/usr/local/etc/haproxy
