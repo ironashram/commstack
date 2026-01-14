@@ -1,4 +1,4 @@
-﻿services:
+services:
   haproxy:
     container_name: haproxy
     image: docker.io/haproxy:3.3.1
@@ -12,7 +12,7 @@
 
   synapse:
     container_name: synapse
-    image: docker.io/matrixdotorg/synapse:v1.144.0
+    image: docker.io/matrixdotorg/synapse:v1.145.0
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yml
