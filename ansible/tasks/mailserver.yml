@@ -47,10 +47,9 @@
       - setup
       - email
       - add
-      - "{{ item.email }}"
-      - "{{ item.password }}"
-  loop:
-    - "{{ postfix_users }}"
+      - "{{ item.value.email }}"
+      - "{{ item.value.password }}"
+  loop: "{{ postfix_users | dict2items }}"
   when: "not accounts.stat.exists"
   no_log: true
 
@@ -66,10 +65,9 @@
       - setup
       - alias
       - add
-      - "{{ item.alias }}"
-      - "{{ item.email }}"
-  loop:
-    - "{{ postfix_aliases }}"
+      - "{{ item.value.alias }}"
+      - "{{ item.value.email }}"
+  loop: "{{ postfix_aliases | dict2items }}"
   when: "not alias.stat.exists"
   no_log: true
 
