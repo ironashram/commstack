@@ -27,6 +27,9 @@ postfix_users:
   user1:
     email: "{{ lookup('hashi_vault', 'secret=kv/data/mail:user') }}"
     password: "{{ lookup('hashi_vault', 'secret=kv/data/mail:user_password') }}"
+  alerts:
+    email: "{{ lookup('hashi_vault', 'secret=kv/data/mail:alerts') }}"
+    password: "{{ lookup('hashi_vault', 'secret=kv/data/mail:alerts_password') }}"
 postfix_aliases:
   postmaster:
     alias: "postmaster@{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
