@@ -21,5 +21,8 @@ COMMIT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 8448 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 18448 -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 9100 -s 172.16.0.0/12 -j ACCEPT -m comment --comment "Ansble Managed Rule"
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 9100 -s {{ monitoring_scrape_source_ip }} -j ACCEPT -m comment --comment "Ansble Managed Rule"
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 8080 -s {{ monitoring_scrape_source_ip }} -j ACCEPT -m comment --comment "Ansble Managed Rule"
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 9000 -s {{ monitoring_scrape_source_ip }} -j ACCEPT -m comment --comment "Ansble Managed Rule"
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Ansble Managed Rule"
 COMMIT

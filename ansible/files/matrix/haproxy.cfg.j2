@@ -31,16 +31,13 @@ frontend https_frontend
     http-request set-header X-Forwarded-For %[src]
 
     acl host_matrix hdr(host) -i {{ matrix_domain }}
-    acl host_grafana hdr(host) -i {{ matrix_base_domain }}
     acl path_matrix path_beg /_matrix /_synapse/client
     acl path_well_known_client path /.well-known/matrix/client
     acl path_well_known_server path /.well-known/matrix/server
-    acl path_grafana path_beg /grafana/
 
     use_backend well_known_client if path_well_known_client
     use_backend well_known_server if path_well_known_server
     use_backend matrix_synapse if host_matrix path_matrix
-    use_backend grafana if host_grafana path_grafana
 
     default_backend no_backend
 
@@ -62,10 +59,6 @@ backend well_known_server
 backend matrix_synapse
     server matrix localhost:8008 check
     option httpchk HEAD /_matrix/client/versions
-
-backend grafana
-    server grafana localhost:3000 check
-    option forwardfor
 
 backend no_backend
     http-request return status 401 content-type "application/json" string '{"error": "Unauthorized"}'

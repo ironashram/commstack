@@ -9,14 +9,15 @@
     state: directory
     mode: "0755"
 
-- name: iptables | Copy ipv4 rules file
-  ansible.builtin.copy:
+- name: iptables | Template ipv4 rules file
+  ansible.builtin.template:
     src: files/iptables/rules.v4
     dest: /etc/iptables/rules.v4
     owner: root
     group: root
     mode: "0644"
     backup: true
+  no_log: true
   notify:
     - Apply ipv4 iptables rules
 
