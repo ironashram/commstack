@@ -16,6 +16,7 @@ arch_base_packages:
   - iptables-nft
   - cronie
   - python-docker
+  - bash-completion
 # mail server
 mail_host: "{{ lookup('hashi_vault', 'secret=kv/data/mail:hostname') }}"
 postfix_users:
