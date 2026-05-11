@@ -4,20 +4,18 @@ ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
 # base packages
 package_update: false
-debian_base_packages:
+arch_base_packages:
   - ca-certificates
   - curl
-  - containerd.io
-  - docker-ce
-  - docker-ce-cli
-  - docker-buildx-plugin
-  - docker-compose-plugin
+  - containerd
+  - docker
+  - docker-compose
+  - docker-buildx
   - git
   - gnupg
-  - iptables-persistent
-  - netfilter-persistent
-  - python3-pip
-  - python3-docker
+  - iptables-nft
+  - cronie
+  - python-docker
 # mail server
 mail_host: "{{ lookup('hashi_vault', 'secret=kv/data/mail:hostname') }}"
 postfix_users:

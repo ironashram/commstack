@@ -1,49 +1,10 @@
-﻿---
-- name: pkg | Disable auto-updates (Removing unattended-upgrades package)
-  ansible.builtin.apt:
-    name: unattended-upgrades
-    state: absent
-    purge: true
-
-- name: pkg | Remove ufw
-  ansible.builtin.apt:
-    name: ufw
-    state: absent
-    purge: true
-  notify: Flush iptables
-
-- name: pkg | Remove snapd
-  ansible.builtin.apt:
-    name: snapd
-    state: absent
-    purge: true
-
-- name: pkg | Remove cloud-init
-  ansible.builtin.apt:
-    name: cloud-init
-    state: absent
-    purge: true
-
-- name: pkg | Add Docker GPG apt Key
-  ansible.builtin.get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /etc/apt/trusted.gpg.d/docker.asc
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: pkg | Add Docker Repository
-  ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-    state: present
-
+---
 - name: pkg | Install required packages
-  ansible.builtin.apt:
-    name: "{{ item }}"
+  community.general.pacman:
+    name: "{{ arch_base_packages }}"
     state: "{{ 'latest' if package_update | bool else 'present' }}"
     update_cache: true
   become: true
-  loop: "{{ debian_base_packages }}"
 
 - name: pkg | Copy docker config.json
   ansible.builtin.copy:

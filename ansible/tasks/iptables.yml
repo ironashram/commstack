@@ -11,8 +11,8 @@
 
 - name: iptables | Template ipv4 rules file
   ansible.builtin.template:
-    src: files/iptables/rules.v4
-    dest: /etc/iptables/rules.v4
+    src: files/iptables/iptables.rules
+    dest: /etc/iptables/iptables.rules
     owner: root
     group: root
     mode: "0644"
@@ -23,8 +23,8 @@
 
 - name: iptables | Copy ipv6 rules file
   ansible.builtin.copy:
-    src: files/iptables/rules.v6
-    dest: /etc/iptables/rules.v6
+    src: files/iptables/ip6tables.rules
+    dest: /etc/iptables/ip6tables.rules
     owner: root
     group: root
     mode: "0644"

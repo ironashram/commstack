@@ -61,7 +61,7 @@ backend well_known_server
     http-request return status 200 content-type "application/json" string '{"m.server": "{{ matrix_domain }}"}'
 
 backend matrix_synapse
-    server matrix localhost:8008 check
+    server matrix 127.0.0.1:8008 check
     option httpchk HEAD /_matrix/client/versions
 
 backend no_backend

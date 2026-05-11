@@ -54,14 +54,14 @@
     - name: Apply ipv4 iptables rules
       community.general.iptables_state:
         state: restored
-        path: /etc/iptables/rules.v4
+        path: /etc/iptables/iptables.rules
       async: "{{ ansible_timeout }}"
       poll: 0
 
     - name: Apply ipv6 iptables rules
       community.general.iptables_state:
         state: restored
-        path: /etc/iptables/rules.v6
+        path: /etc/iptables/ip6tables.rules
         ip_version: ipv6
       async: "{{ ansible_timeout }}"
       poll: 0
