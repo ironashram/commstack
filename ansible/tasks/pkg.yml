@@ -1,9 +1,14 @@
 ---
+- name: pkg | Refresh package database
+  community.general.pacman:
+    update_cache: true
+  become: true
+  changed_when: false
+
 - name: pkg | Install required packages
   community.general.pacman:
     name: "{{ arch_base_packages }}"
     state: "{{ 'latest' if package_update | bool else 'present' }}"
-    update_cache: true
   become: true
 
 - name: pkg | Copy docker config.json
