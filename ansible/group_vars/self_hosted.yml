@@ -2,6 +2,8 @@
 ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
 ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
+# backup
+backup_nfs_dest: "{{ lookup('hashi_vault', 'secret=kv/data/backup:nfs_dest') }}"
 # base packages
 package_update: false
 arch_base_packages:

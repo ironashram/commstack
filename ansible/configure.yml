@@ -8,14 +8,12 @@
         name: commstack
         groups: self_hosted
       tags:
-        [
-          "packages",
-          "iptables",
-          "certbot",
-          "matrix",
-          "mailserver",
-          "monitoring",
-        ]
+        - packages
+        - iptables
+        - certbot
+        - matrix
+        - mailserver
+        - monitoring
       changed_when: false
 
 - name: Configure Personal Services

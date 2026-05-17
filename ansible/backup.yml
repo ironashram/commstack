@@ -1,0 +1,28 @@
+---
+- name: Dynamic Inventory
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Add Hosts
+      ansible.builtin.add_host:
+        name: commstack
+        groups: self_hosted
+      tags:
+        - backup
+      changed_when: false
+
+- name: Backup CommStack
+  hosts: self_hosted
+  gather_facts: true
+  tasks:
+    - name: Run backup
+      ansible.builtin.import_tasks: tasks/backup.yml
+      tags: backup
+
+- name: Schedule CommStack Backup
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Install backup cron
+      ansible.builtin.import_tasks: tasks/backup-scheduler.yml
+      tags: scheduler
