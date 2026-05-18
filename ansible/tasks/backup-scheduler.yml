@@ -5,7 +5,7 @@
     user: "{{ lookup('env', 'USER') }}"
     minute: "0"
     hour: "3"
-    job: "zsh -c 'source ~/.zshrc; cd ~/Documents/github/commstack/ansible && ansible-playbook -i inventory.yml backup.yml --tags backup'"
+    job: "XDG_RUNTIME_DIR=/run/user/$(id -u) zellij -s commstack-backup action new-pane --close-on-exit -- ansible-playbook -i inventory.yml backup.yml --tags backup"
     cron_file: commstack-backup
     state: present
   become: true
