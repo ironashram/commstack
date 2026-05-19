@@ -1,0 +1,78 @@
+---
+- name: coolify | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['coolify'] }}"
+
+- name: coolify | Ensure /data/coolify/source exists
+  ansible.builtin.file:
+    path: /data/coolify/source
+    state: directory
+    owner: "9999"
+    group: root
+    mode: "0700"
+
+- name: coolify | Slurp live .env (drift check)
+  ansible.builtin.slurp:
+    src: /data/coolify/source/.env
+  register: coolify_live_env_b64
+  no_log: true
+  failed_when: false
+
+- name: coolify | Compute .env drift (key names only)
+  ansible.builtin.set_fact:
+    coolify_env_drift_keys: >-
+      {{
+        ((coolify_live_env_b64.content | b64decode).splitlines()
+          | map('regex_replace', '^\s*#.*$', '')
+          | reject('eq', '')
+          | list)
+        | symmetric_difference(
+          (lookup('template', 'files/coolify/.env.j2').splitlines()
+            | map('regex_replace', '^\s*#.*$', '')
+            | reject('eq', '')
+            | list))
+        | map('regex_replace', '=.*$', '')
+        | map('trim')
+        | unique
+        | list
+      }}
+  no_log: true
+  when: coolify_live_env_b64.content is defined
+
+- name: coolify | Warn on .env drift
+  ansible.builtin.debug:
+    msg: "WARNING: live /data/coolify/source/.env diverges from vault-rendered template for keys: {{ coolify_env_drift_keys | join(', ') }}"
+  when:
+    - coolify_env_drift_keys is defined
+    - coolify_env_drift_keys | length > 0
+
+- name: coolify | Template .env
+  ansible.builtin.template:
+    src: files/coolify/.env.j2
+    dest: /data/coolify/source/.env
+    owner: root
+    group: root
+    mode: "0644"
+  no_log: true
+  notify:
+    - Docker Compose Up
+
+- name: coolify | Copy docker-compose.yml
+  ansible.builtin.copy:
+    src: files/coolify/docker-compose.yml
+    dest: /data/coolify/source/docker-compose.yml
+    owner: "9999"
+    group: root
+    mode: "0700"
+  notify:
+    - Docker Compose Up
+
+- name: coolify | Copy docker-compose.prod.yml
+  ansible.builtin.copy:
+    src: files/coolify/docker-compose.prod.yml
+    dest: /data/coolify/source/docker-compose.prod.yml
+    owner: "9999"
+    group: root
+    mode: "0700"
+  notify:
+    - Docker Compose Up

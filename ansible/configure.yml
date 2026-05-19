@@ -3,10 +3,9 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Add Hosts
+    - name: Add commstack
       ansible.builtin.add_host:
         name: commstack
-        groups: self_hosted
       tags:
         - packages
         - iptables
@@ -16,8 +15,15 @@
         - monitoring
       changed_when: false
 
-- name: Configure Personal Services
-  hosts: self_hosted
+    - name: Add coolify
+      ansible.builtin.add_host:
+        name: coolify
+      tags:
+        - coolify
+      changed_when: false
+
+- name: Configure commstack
+  hosts: commstack
   gather_facts: true
   tasks:
     - name: Install Packages
@@ -103,4 +109,59 @@
         recreate: auto
         remove_orphans: true
       when: "'mailserver' in ansible_tags"
+      listen: "Docker Compose Up"
+
+- name: Configure coolify
+  hosts: coolify
+  gather_facts: true
+  tasks:
+    - name: Install Packages
+      ansible.builtin.import_tasks: tasks/pkg.yml
+      tags: coolify
+
+    - name: Configure Iptables
+      ansible.builtin.import_tasks: tasks/iptables.yml
+      tags: coolify
+
+    - name: Configure Coolify
+      ansible.builtin.import_tasks: tasks/coolify.yml
+      tags: coolify
+
+  handlers:
+    - name: Flush iptables
+      ansible.builtin.iptables:
+        flush: true
+
+    - name: Apply ipv4 iptables rules
+      community.general.iptables_state:
+        state: restored
+        path: /etc/iptables/iptables.rules
+      async: "{{ ansible_timeout }}"
+      poll: 0
+
+    - name: Apply ipv6 iptables rules
+      community.general.iptables_state:
+        state: restored
+        path: /etc/iptables/ip6tables.rules
+        ip_version: ipv6
+      async: "{{ ansible_timeout }}"
+      poll: 0
+
+    - name: Restart Docker
+      ansible.builtin.systemd_service:
+        name: docker.service
+        state: restarted
+
+    - name: Docker Compose Up - Coolify
+      community.docker.docker_compose_v2:
+        project_src: /data/coolify/source
+        files:
+          - docker-compose.yml
+          - docker-compose.prod.yml
+        env_files:
+          - /data/coolify/source/.env
+        state: present
+        recreate: auto
+        remove_orphans: true
+      when: "'coolify' in ansible_tags"
       listen: "Docker Compose Up"

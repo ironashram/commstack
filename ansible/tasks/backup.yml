@@ -8,7 +8,7 @@
     backup_ts: "{{ ansible_date_time.iso8601_basic_short }}"
   run_once: true
 
-- name: backup | Resolve commstack connection vars
+- name: backup | Resolve connection vars
   ansible.builtin.set_fact:
     ansible_port: "{{ ansible_port | int }}"
     ansible_host: "{{ ansible_ssh_host }}"
@@ -20,7 +20,7 @@
     mode: "0700"
   delegate_to: localhost
 
-- name: backup | Pull data from commstack
+- name: backup | Pull data from {{ backup_name }}
   ansible.posix.synchronize:
     mode: pull
     src: "{{ item }}"
@@ -32,13 +32,7 @@
     delete: false
     compress: false
     delay_updates: false
-  loop:
-    - /docker
-    - /var/lib/docker/volumes
-    - /etc/docker
-    - /root/.ssh
-    - /etc/iptables
-    - /etc/hostname
+  loop: "{{ backup_paths }}"
 
 - name: backup | Ensure NFS dest exists
   ansible.builtin.file:
@@ -50,7 +44,7 @@
 - name: backup | Archive stage into NFS dest
   community.general.archive:
     path: "{{ backup_stage }}/{{ backup_ts }}/"
-    dest: "{{ backup_nfs_dest }}/commstack-{{ backup_ts }}.tar.gz"
+    dest: "{{ backup_nfs_dest }}/{{ backup_name }}-{{ backup_ts }}.tar.gz"
     format: gz
     mode: "0600"
     remove: true
@@ -58,7 +52,7 @@
 
 - name: backup | Compute archive hash
   ansible.builtin.stat:
-    path: "{{ backup_nfs_dest }}/commstack-{{ backup_ts }}.tar.gz"
+    path: "{{ backup_nfs_dest }}/{{ backup_name }}-{{ backup_ts }}.tar.gz"
     checksum_algorithm: sha256
     get_checksum: true
   register: backup_archive_stat
@@ -66,15 +60,15 @@
 
 - name: backup | Save archive hash
   ansible.builtin.copy:
-    content: "{{ backup_archive_stat.stat.checksum }}  commstack-{{ backup_ts }}.tar.gz\n"
-    dest: "{{ backup_nfs_dest }}/commstack-{{ backup_ts }}.tar.gz.sha256"
+    content: "{{ backup_archive_stat.stat.checksum }}  {{ backup_name }}-{{ backup_ts }}.tar.gz\n"
+    dest: "{{ backup_nfs_dest }}/{{ backup_name }}-{{ backup_ts }}.tar.gz.sha256"
     mode: "0600"
   delegate_to: localhost
 
 - name: backup | List existing tarballs
   ansible.builtin.find:
     paths: "{{ backup_nfs_dest }}"
-    patterns: "commstack-*.tar.gz"
+    patterns: "{{ backup_name }}-*.tar.gz"
     file_type: file
   register: backup_tarballs
   delegate_to: localhost

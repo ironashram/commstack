@@ -14,7 +14,7 @@
   <img src="assets/commstack.png" alt="CommStack ScreenShot" width="800">
 </p>
 
-This repo contains automation and tooling to manage my own mail/matrix server. <br>
+This repo contains automation and tooling to manage my own mail/matrix server and coolify host. <br>
 Automated SSL generation/renewal is included with Let'sencrypt CA via cerbot and Hetzner DNS challenge.
 
 
@@ -45,4 +45,5 @@ ansible-playbook -i inventory.yml configure.yml
 https://www.ansible.com/ <br>
 https://openbao.org/ <br>
 https://github.com/element-hq/synapse <br>
-https://github.com/docker-mailserver/docker-mailserver
+https://github.com/docker-mailserver/docker-mailserver <br>
+https://github.com/coollabsio/coolify

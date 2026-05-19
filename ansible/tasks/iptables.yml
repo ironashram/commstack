@@ -11,7 +11,7 @@
 
 - name: iptables | Template ipv4 rules file
   ansible.builtin.template:
-    src: files/iptables/iptables.rules
+    src: "files/iptables/{{ inventory_hostname }}.iptables.rules"
     dest: /etc/iptables/iptables.rules
     owner: root
     group: root
@@ -23,7 +23,7 @@
 
 - name: iptables | Copy ipv6 rules file
   ansible.builtin.copy:
-    src: files/iptables/ip6tables.rules
+    src: "files/iptables/{{ inventory_hostname }}.ip6tables.rules"
     dest: /etc/iptables/ip6tables.rules
     owner: root
     group: root

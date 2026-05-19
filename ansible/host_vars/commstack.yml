@@ -4,6 +4,14 @@ ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
 # backup
 backup_nfs_dest: "{{ lookup('hashi_vault', 'secret=kv/data/backup:nfs_dest') }}"
+backup_name: commstack
+backup_paths:
+  - /docker
+  - /var/lib/docker/volumes
+  - /etc/docker
+  - /root/.ssh
+  - /etc/iptables
+  - /etc/hostname
 # base packages
 package_update: false
 arch_base_packages:

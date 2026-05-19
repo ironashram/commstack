@@ -1,0 +1,38 @@
+# connection
+ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
+ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:ipv4') }}"
+ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
+# backup
+backup_nfs_dest: "{{ lookup('hashi_vault', 'secret=kv/data/backup:nfs_dest') }}"
+backup_name: coolify
+backup_paths:
+  - /data
+  - /var/lib/docker/volumes
+  - /etc/docker
+  - /root/.ssh
+  - /etc/iptables
+  - /etc/hostname
+# base packages
+package_update: false
+arch_base_packages:
+  - ca-certificates
+  - curl
+  - containerd
+  - docker
+  - docker-compose
+  - docker-buildx
+  - git
+  - gnupg
+  - iptables-nft
+  - cronie
+  - python-docker
+  - bash-completion
+# coolify
+coolify_app_id: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:app_id') }}"
+coolify_app_key: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:app_key') }}"
+coolify_db_username: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:db_username') }}"
+coolify_db_password: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:db_password') }}"
+coolify_redis_password: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:redis_password') }}"
+coolify_pusher_app_id: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:pusher_app_id') }}"
+coolify_pusher_app_key: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:pusher_app_key') }}"
+coolify_pusher_app_secret: "{{ lookup('hashi_vault', 'secret=kv/data/coolify:pusher_app_secret') }}"
