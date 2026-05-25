@@ -15,7 +15,7 @@
 
 - name: backup | Stage dir on controller
   ansible.builtin.file:
-    path: "{{ backup_stage }}/{{ backup_ts }}"
+    path: "{{ backup_stage }}/{{ backup_name }}/{{ backup_ts }}"
     state: directory
     mode: "0700"
   delegate_to: localhost
@@ -24,7 +24,7 @@
   ansible.posix.synchronize:
     mode: pull
     src: "{{ item }}"
-    dest: "{{ backup_stage }}/{{ backup_ts }}/"
+    dest: "{{ backup_stage }}/{{ backup_name }}/{{ backup_ts }}/"
     rsync_opts:
       - --numeric-ids
       - --relative
@@ -36,15 +36,15 @@
 
 - name: backup | Ensure NFS dest exists
   ansible.builtin.file:
-    path: "{{ backup_nfs_dest }}"
+    path: "{{ backup_nfs_dest }}/{{ backup_name }}"
     state: directory
     mode: "0755"
   delegate_to: localhost
 
 - name: backup | Archive stage into NFS dest
   community.general.archive:
-    path: "{{ backup_stage }}/{{ backup_ts }}/"
-    dest: "{{ backup_nfs_dest }}/{{ backup_name }}-{{ backup_ts }}.tar.gz"
+    path: "{{ backup_stage }}/{{ backup_name }}/{{ backup_ts }}/"
+    dest: "{{ backup_nfs_dest }}/{{ backup_name }}/{{ backup_name }}-{{ backup_ts }}.tar.gz"
     format: gz
     mode: "0600"
     remove: true
@@ -52,7 +52,7 @@
 
 - name: backup | Compute archive hash
   ansible.builtin.stat:
-    path: "{{ backup_nfs_dest }}/{{ backup_name }}-{{ backup_ts }}.tar.gz"
+    path: "{{ backup_nfs_dest }}/{{ backup_name }}/{{ backup_name }}-{{ backup_ts }}.tar.gz"
     checksum_algorithm: sha256
     get_checksum: true
   register: backup_archive_stat
@@ -61,13 +61,13 @@
 - name: backup | Save archive hash
   ansible.builtin.copy:
     content: "{{ backup_archive_stat.stat.checksum }}  {{ backup_name }}-{{ backup_ts }}.tar.gz\n"
-    dest: "{{ backup_nfs_dest }}/{{ backup_name }}-{{ backup_ts }}.tar.gz.sha256"
+    dest: "{{ backup_nfs_dest }}/{{ backup_name }}/{{ backup_name }}-{{ backup_ts }}.tar.gz.sha256"
     mode: "0600"
   delegate_to: localhost
 
 - name: backup | List existing tarballs
   ansible.builtin.find:
-    paths: "{{ backup_nfs_dest }}"
+    paths: "{{ backup_nfs_dest }}/{{ backup_name }}"
     patterns: "{{ backup_name }}-*.tar.gz"
     file_type: file
   register: backup_tarballs

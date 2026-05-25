@@ -24,11 +24,3 @@
     - name: Run backup
       ansible.builtin.import_tasks: tasks/backup.yml
       tags: backup
-
-- name: Install backup crons
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Install backup crons
-      ansible.builtin.import_tasks: tasks/backup-cron.yml
-      tags: cron
