@@ -11,6 +11,16 @@
     state: "{{ 'latest' if package_update | bool else 'present' }}"
   become: true
 
+- name: pkg | Add yay alias for system updates
+  ansible.builtin.copy:
+    content: |
+      alias yay='pacman -Syu'
+    dest: /etc/profile.d/yay.sh
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
 - name: pkg | Copy docker config.json
   ansible.builtin.copy:
     src: files/docker/config.json
