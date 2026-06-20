@@ -19,7 +19,7 @@ on:
 
 jobs:
   ansible-deploy:
-    runs-on: gha-runner-scale-set-commstack
+    runs-on: [self-hosted, commstack]
     container:
       image: ghcr.io/ironashram/toolbox:latest
     steps:
