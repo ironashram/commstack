@@ -3,6 +3,28 @@
   hosts: localhost
   gather_facts: false
   tasks:
+    - name: Ensure ~/.ssh exists
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'HOME') }}/.ssh"
+        state: directory
+        mode: "0700"
+      tags: always
+
+    - name: Write SSH known_hosts from Vault
+      ansible.builtin.copy:
+        content: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:known_hosts') }}"
+        dest: "{{ lookup('env', 'HOME') }}/.ssh/known_hosts"
+        mode: "0644"
+      tags: always
+
+    - name: Write SSH private key from Vault
+      ansible.builtin.copy:
+        content: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:private_key') }}"
+        dest: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+        mode: "0600"
+      no_log: true
+      tags: always
+
     - name: Add commstack
       ansible.builtin.add_host:
         name: commstack
