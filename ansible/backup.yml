@@ -3,6 +3,9 @@
   hosts: localhost
   gather_facts: false
   tasks:
+    - name: Set up SSH config from Vault
+      ansible.builtin.import_tasks: tasks/ssh_setup.yml
+
     - name: Add commstack
       ansible.builtin.add_host:
         name: commstack
