@@ -13,6 +13,12 @@
     ansible_port: "{{ ansible_port | int }}"
     ansible_host: "{{ ansible_ssh_host }}"
 
+- name: backup | Clean stale stage dir on controller
+  ansible.builtin.file:
+    path: "{{ backup_stage }}/{{ backup_name }}"
+    state: absent
+  delegate_to: localhost
+
 - name: backup | Stage dir on controller
   ansible.builtin.file:
     path: "{{ backup_stage }}/{{ backup_name }}/{{ backup_ts }}"
@@ -33,6 +39,8 @@
     compress: false
     delay_updates: false
   loop: "{{ backup_paths }}"
+  register: backup_pull
+  failed_when: backup_pull.rc not in [0, 24]
 
 - name: backup | Ensure NFS dest exists
   ansible.builtin.file:
