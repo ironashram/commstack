@@ -37,8 +37,8 @@
 
 - name: mailserver | Template fail2ban jail config
   ansible.builtin.template:
-    src: files/mailserver/fail2ban-jail.cf.j2
-    dest: /docker/mail/config/fail2ban-jail.cf
+    src: files/mailserver/fail2ban-jail.local.j2
+    dest: /docker/mail/fail2ban-jail.local
     owner: root
     group: root
     mode: "0644"

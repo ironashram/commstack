@@ -9,6 +9,7 @@
       - /docker/mail/mail-state/:/var/mail-state/
       - /docker/mail/mail-logs/:/var/log/mail/
       - /docker/mail/config/:/tmp/docker-mailserver/
+      - /docker/mail/fail2ban-jail.local:/etc/fail2ban/jail.d/user-jail.local:ro
       - /etc/localtime:/etc/localtime:ro
       - /docker/certbot/certbot_etc:/etc/letsencrypt
     restart: always
