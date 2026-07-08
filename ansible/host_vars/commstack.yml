@@ -43,7 +43,6 @@ postfix_aliases:
   postmaster:
     alias: "postmaster@{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
     email: "{{ lookup('hashi_vault', 'secret=kv/data/mail:admin') }}"
-opendkim_folder: "/docker/mail/config/opendkim/keys/{{ lookup('hashi_vault', 'secret=kv/data/mail:base_hostname') }}"
 # acme
 acme_base_domain: "{{ lookup('hashi_vault', 'secret=kv/data/acme:base_domain') }}"
 acme_certificate_email: "{{ lookup('hashi_vault', 'secret=kv/data/acme:acme_certificate_email') }}"
