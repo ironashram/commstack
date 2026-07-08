@@ -55,6 +55,20 @@
   notify:
     - Docker Compose Up
 
+- name: mailserver | Generate rspamd DKIM signing key
+  ansible.builtin.command:
+    cmd: openssl genrsa -out /docker/mail/rspamd-dkim.private 2048
+    creates: /docker/mail/rspamd-dkim.private
+  notify:
+    - Docker Compose Up
+
+- name: mailserver | Set rspamd DKIM key ownership for _rspamd
+  ansible.builtin.file:
+    path: /docker/mail/rspamd-dkim.private
+    owner: "111"
+    group: "114"
+    mode: "0400"
+
 - name: mailserver | Check Postfix Users
   ansible.builtin.stat:
     path: /docker/mail/config/postfix-accounts.cf
