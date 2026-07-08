@@ -45,6 +45,16 @@
   notify:
     - Docker Compose Up
 
+- name: mailserver | Template rspamd dkim signing config
+  ansible.builtin.template:
+    src: files/mailserver/rspamd-dkim_signing.conf.j2
+    dest: /docker/mail/rspamd-dkim_signing.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Docker Compose Up
+
 - name: mailserver | Check Postfix Users
   ansible.builtin.stat:
     path: /docker/mail/config/postfix-accounts.cf
@@ -80,17 +90,3 @@
   loop: "{{ postfix_aliases | dict2items }}"
   when: "not alias.stat.exists"
   no_log: true
-
-- name: mailserver | Check OpenDKIM
-  ansible.builtin.stat:
-    path: "{{ opendkim_folder }}"
-  register: opendkim
-
-- name: mailserver | Setup OpenDKIM
-  community.docker.docker_container_exec:
-    container: mailserver
-    argv:
-      - setup
-      - config
-      - dkim
-  when: "not opendkim.stat.exists"
