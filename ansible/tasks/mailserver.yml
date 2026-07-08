@@ -35,6 +35,16 @@
   notify:
     - Docker Compose Up
 
+- name: mailserver | Template fail2ban jail config
+  ansible.builtin.template:
+    src: files/mailserver/fail2ban-jail.cf.j2
+    dest: /docker/mail/config/fail2ban-jail.cf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Docker Compose Up
+
 - name: mailserver | Check Postfix Users
   ansible.builtin.stat:
     path: /docker/mail/config/postfix-accounts.cf
