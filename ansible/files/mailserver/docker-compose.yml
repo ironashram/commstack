@@ -1,6 +1,6 @@
 services:
   mailserver:
-    image: ghcr.io/docker-mailserver/docker-mailserver:edge@sha256:3a7a436339a1b869c8b81c99ff813b8c7cd16561c3b0cac2379e400ebc4e2eed
+    image: ghcr.io/docker-mailserver/docker-mailserver:edge@sha256:3aa60aa1dfa039a60085a038c6b5a0b98f0623fb12852890b2c33a3effb22441
     container_name: mailserver
     hostname: "{{ mail_host }}"
     env_file: mailserver.env
