@@ -65,7 +65,7 @@
 - name: mailserver | Set rspamd DKIM key ownership for _rspamd
   ansible.builtin.file:
     path: /docker/mail/rspamd-dkim.private
-    owner: "111"
+    owner: "112"
     group: "114"
     mode: "0400"
 
