@@ -2,6 +2,11 @@
 ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
 ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
+# readme widgets
+readme_stats_domain: "readme-stats.{{ acme_base_domain }}"
+gh_streak_domain: "gh-streak.{{ acme_base_domain }}"
+readme_stats_pat: "{{ lookup('hashi_vault', 'secret=kv/data/readme_widgets:readme_stats_pat') }}"
+gh_streak_token: "{{ lookup('hashi_vault', 'secret=kv/data/readme_widgets:streak_stats_token') }}"
 # veeam agent
 veeam_packages:
   - linux-headers

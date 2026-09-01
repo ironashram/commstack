@@ -1,0 +1,23 @@
+---
+- name: readme_widgets | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['readme_widgets'] }}"
+
+- name: readme_widgets | Create /docker/readme-widgets
+  ansible.builtin.file:
+    path: /docker/readme-widgets
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: readme_widgets | Template docker-compose.yml
+  ansible.builtin.template:
+    src: files/readme-widgets/docker-compose.yml
+    dest: /docker/readme-widgets/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  notify:
+    - Docker Compose Up

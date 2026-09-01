@@ -27,3 +27,8 @@ updates:
     directory: "ansible/files/monitoring"
     schedule:
       interval: "daily"
+
+  - package-ecosystem: "docker-compose"
+    directory: "ansible/files/readme-widgets"
+    schedule:
+      interval: "daily"

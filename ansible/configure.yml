@@ -18,6 +18,7 @@
         - matrix
         - mailserver
         - monitoring
+        - readme_widgets
       changed_when: false
 
     - name: Add coolify
@@ -63,6 +64,10 @@
       ansible.builtin.import_tasks: tasks/monitoring.yml
       tags: monitoring
 
+    - name: Configure Readme Widgets
+      ansible.builtin.import_tasks: tasks/readme_widgets.yml
+      tags: readme_widgets
+
   handlers:
     - name: Flush iptables
       ansible.builtin.iptables:
@@ -87,6 +92,12 @@
       ansible.builtin.systemd_service:
         name: wg-quick@wg0
         state: restarted
+
+    - name: Restart HAProxy
+      community.docker.docker_container:
+        name: haproxy
+        state: started
+        restart: true
 
     - name: Restart Docker
       ansible.builtin.systemd_service:
@@ -127,6 +138,15 @@
         recreate: auto
         remove_orphans: true
       when: "'mailserver' in ansible_tags"
+      listen: "Docker Compose Up"
+
+    - name: Docker Compose Up - Readme Widgets
+      community.docker.docker_compose_v2:
+        project_src: /docker/readme-widgets
+        state: present
+        recreate: auto
+        remove_orphans: true
+      when: "'readme_widgets' in ansible_tags"
       listen: "Docker Compose Up"
 
 - name: Configure coolify

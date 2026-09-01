@@ -1,0 +1,19 @@
+services:
+  readme-stats:
+    image: ghcr.io/ironashram/github-readme-stats:v0.1.0
+    container_name: readme-stats
+    restart: unless-stopped
+    environment:
+      PAT_1: "{{ readme_stats_pat }}"
+      PORT: "9000"
+    ports:
+      - "127.0.0.1:9002:9000"
+
+  gh-streak:
+    image: ghcr.io/ironashram/github-readme-streak-stats:v1.8.0
+    container_name: gh-streak
+    restart: unless-stopped
+    environment:
+      TOKEN: "{{ gh_streak_token }}"
+    ports:
+      - "127.0.0.1:9003:80"
