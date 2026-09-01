@@ -1,0 +1,19 @@
+name: Deploy Readme Widgets
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'ansible/files/readme-widgets/**'
+      - 'ansible/tasks/readme_widgets.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/ansible-base.yaml
+    with:
+      tags: readme_widgets
+    secrets:
+      VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
