@@ -5,6 +5,6 @@ ssh_config_dir: /tmp/commstack-ssh
 ansible_ssh_private_key_file: "{{ ssh_config_dir }}/id_rsa"
 ansible_ssh_common_args: "-o UserKnownHostsFile={{ ssh_config_dir }}/known_hosts -o StrictHostKeyChecking=yes"
 
-# backup
-backup_stage: /tmp/commstack-backup-stage
-backup_keep: 14
+# arch-local-repo
+arch_local_repo_url: https://s3.m1k.cloud/arch-local-repo/x86_64/
+arch_local_repo_key: 766C2CAD62688604

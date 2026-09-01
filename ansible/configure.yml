@@ -12,6 +12,8 @@
       tags:
         - packages
         - iptables
+        - wireguard
+        - veeam
         - certbot
         - matrix
         - mailserver
@@ -36,6 +38,14 @@
     - name: Configure Iptables
       ansible.builtin.import_tasks: tasks/iptables.yml
       tags: iptables
+
+    - name: Configure WireGuard
+      ansible.builtin.import_tasks: tasks/wireguard.yml
+      tags: wireguard
+
+    - name: Configure Veeam Agent
+      ansible.builtin.import_tasks: tasks/veeam.yml
+      tags: veeam
 
     - name: Configure Certbot
       ansible.builtin.import_tasks: tasks/certbot.yml
@@ -72,6 +82,11 @@
         ip_version: ipv6
       async: "{{ ansible_timeout }}"
       poll: 0
+
+    - name: Restart WireGuard
+      ansible.builtin.systemd_service:
+        name: wg-quick@wg0
+        state: restarted
 
     - name: Restart Docker
       ansible.builtin.systemd_service:

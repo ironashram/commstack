@@ -1,0 +1,56 @@
+---
+- name: veeam | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['veeam'] }}"
+
+- name: veeam | Copy arch-local-repo signing key
+  ansible.builtin.copy:
+    src: files/arch-local-repo.asc
+    dest: /etc/pacman.d/arch-local-repo.asc
+    owner: root
+    group: root
+    mode: "0644"
+- name: veeam | Check whether repo signing key is already trusted
+  ansible.builtin.command: pacman-key --list-keys {{ arch_local_repo_key }}
+  register: veeam_repo_key_trusted
+  changed_when: false
+  failed_when: false
+
+- name: veeam | Import repo signing key
+  ansible.builtin.command: pacman-key --add /etc/pacman.d/arch-local-repo.asc
+  when: veeam_repo_key_trusted.rc != 0
+  changed_when: true
+
+- name: veeam | Locally sign repo key
+  ansible.builtin.command: pacman-key --lsign-key {{ arch_local_repo_key }}
+  when: veeam_repo_key_trusted.rc != 0
+  changed_when: true
+
+- name: veeam | Register arch-local-repo in pacman.conf
+  ansible.builtin.blockinfile:
+    path: /etc/pacman.conf
+    marker: "# {mark} ANSIBLE MANAGED arch-local-repo"
+    block: |
+      [arch-local-repo]
+      Server = {{ arch_local_repo_url }}
+      SigLevel = Required TrustedOnly
+
+- name: veeam | Refresh package database
+  community.general.pacman:
+    update_cache: true
+  changed_when: false
+
+# The DKMS snapshot module is required on ext4: unlike the btrfs workstations the
+# agent has no native snapshot to fall back on. It builds against the headers of
+# the installed kernel, so a kernel upgrade here needs a reboot before the next
+# backup can take a snapshot.
+- name: veeam | Install agent and snapshot module
+  community.general.pacman:
+    name: "{{ veeam_packages }}"
+    state: present
+
+- name: veeam | Enable agent service
+  ansible.builtin.systemd_service:
+    name: veeamservice
+    enabled: true
+    state: started

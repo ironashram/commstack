@@ -1,0 +1,26 @@
+---
+- name: wireguard | Set tags fact
+  ansible.builtin.set_fact:
+    ansible_tags: "{{ ansible_tags | default([]) + ['wireguard'] }}"
+
+- name: wireguard | Install wireguard-tools
+  community.general.pacman:
+    name: wireguard-tools
+    state: present
+
+- name: wireguard | Write tunnel config from Vault
+  ansible.builtin.copy:
+    content: "{{ lookup('hashi_vault', 'secret=kv/data/wireguard:' ~ inventory_hostname ~ '_conf') }}"
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  notify:
+    - Restart WireGuard
+
+- name: wireguard | Enable and start tunnel
+  ansible.builtin.systemd_service:
+    name: wg-quick@wg0
+    enabled: true
+    state: started
