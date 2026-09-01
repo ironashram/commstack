@@ -1,6 +1,6 @@
 services:
   readme-stats:
-    image: ghcr.io/ironashram/github-readme-stats:v0.1.0
+    image: ghcr.io/ironashram/github-readme-stats:v0.1.1
     container_name: readme-stats
     restart: unless-stopped
     environment:
@@ -10,7 +10,7 @@ services:
       - "127.0.0.1:9002:9000"
 
   gh-streak:
-    image: ghcr.io/ironashram/github-readme-streak-stats:v1.8.0
+    image: ghcr.io/ironashram/github-readme-streak-stats:v0.1.0
     container_name: gh-streak
     restart: unless-stopped
     environment:
