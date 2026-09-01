@@ -40,10 +40,6 @@
     update_cache: true
   changed_when: false
 
-# The DKMS snapshot module is required on ext4: unlike the btrfs workstations the
-# agent has no native snapshot to fall back on. It builds against the headers of
-# the installed kernel, so a kernel upgrade here needs a reboot before the next
-# backup can take a snapshot.
 - name: veeam | Install agent and snapshot module
   community.general.pacman:
     name: "{{ veeam_packages }}"
