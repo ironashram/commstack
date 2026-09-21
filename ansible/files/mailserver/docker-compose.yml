@@ -1,6 +1,6 @@
 services:
   mailserver:
-    image: ghcr.io/ironashram/docker-mailserver:16.0.0
+    image: ghcr.io/ironashram/docker-mailserver:26.0.0
     container_name: mailserver
     hostname: "{{ mail_host }}"
     env_file: mailserver.env
