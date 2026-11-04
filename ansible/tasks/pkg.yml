@@ -30,3 +30,12 @@
     mode: '0644'
   notify:
     - Restart Docker
+
+- name: pkg | Blacklist qxl in the kernel cmdline
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX='
+    line: 'GRUB_CMDLINE_LINUX="modprobe.blacklist=qxl"'
+  become: true
+  notify:
+    - Regenerate GRUB config

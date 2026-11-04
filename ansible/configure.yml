@@ -97,6 +97,11 @@
         name: docker.service
         state: restarted
 
+    - name: Regenerate GRUB config
+      ansible.builtin.command: grub-mkconfig -o /boot/grub/grub.cfg
+      become: true
+      changed_when: true
+
     - name: Docker Compose Up - Certbot
       community.docker.docker_compose_v2:
         project_src: /docker/certbot
