@@ -16,6 +16,9 @@ on:
 jobs:
   ansible-deploy:
     runs-on: [self-hosted, commstack]
+    concurrency:
+      group: commstack-ansible
+      cancel-in-progress: false
     container:
       image: ghcr.io/ironashram/toolbox:latest
     steps:

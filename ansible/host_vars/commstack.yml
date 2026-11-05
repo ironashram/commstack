@@ -1,6 +1,6 @@
 ﻿# connection
 ansible_user: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:user') }}"
-ansible_ssh_host: "{{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
+ansible_ssh_extra_args: "-o HostName={{ lookup('hashi_vault', 'secret=kv/data/matrix:ipv4') }}"
 ansible_port: "{{ lookup('hashi_vault', 'secret=kv/data/ansible:port') }}"
 # readme widgets
 readme_stats_domain: "readme-stats.{{ acme_base_domain }}"
