@@ -1,6 +1,6 @@
 services:
   node_exporter:
-    image: quay.io/prometheus/node-exporter:master-distroless@sha256:1cee9cbad1a66f9d2cd3bfdb5e63b65498e7709f4aafc0663ae1ca1360807f3c
+    image: ghcr.io/prometheus/node-exporter:master-distroless@sha256:1cee9cbad1a66f9d2cd3bfdb5e63b65498e7709f4aafc0663ae1ca1360807f3c
     container_name: node-exporter
     restart: unless-stopped
     volumes:
