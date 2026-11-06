@@ -1,7 +1,7 @@
 ﻿services:
   certbot:
     container_name: certbot
-    image: ghcr.io/ironashram/certbot-dns-hetzner-cloud:0.1
+    image: ghcr.io/ironashram/certbot-dns-hetzner-cloud:5.9.0
     volumes:
       - /docker/certbot/certbot_etc:/etc/letsencrypt
       - /docker/certbot/hetzner.ini:/root/hetzner.ini
