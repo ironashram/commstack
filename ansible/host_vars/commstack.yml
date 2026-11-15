@@ -9,12 +9,14 @@ readme_stats_pat: "{{ lookup('hashi_vault', 'secret=kv/data/readme_widgets:readm
 gh_streak_token: "{{ lookup('hashi_vault', 'secret=kv/data/readme_widgets:streak_stats_token') }}"
 # veeam agent
 veeam_packages:
-  - linux-headers
+  - linux-cachyos-headers
   - dkms
   - kernel-modules-hook
   - veeamblksnap-arch-dkms
   - veeam-agent-arch
 # base packages
+cachyos_mirror_url: https://cachyos-mirror.m1k.cloud
+cachyos_repo_key: F3B607488DB35A47
 package_update: false
 arch_base_packages:
   - ca-certificates
@@ -25,7 +27,7 @@ arch_base_packages:
   - docker-buildx
   - git
   - gnupg
-  - iptables-nft
+  - iptables
   - cronie
   - python-docker
   - bash-completion

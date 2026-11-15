@@ -1,4 +1,65 @@
 ---
+- name: pkg | Check whether CachyOS signing key is already trusted
+  ansible.builtin.command: pacman-key --list-keys {{ cachyos_repo_key }}
+  register: pkg_cachyos_key_trusted
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: pkg | Import CachyOS signing key
+  ansible.builtin.command: pacman-key --recv-keys {{ cachyos_repo_key }} --keyserver keyserver.ubuntu.com
+  when: pkg_cachyos_key_trusted.rc != 0
+  changed_when: true
+  become: true
+
+- name: pkg | Locally sign CachyOS signing key
+  ansible.builtin.command: pacman-key --lsign-key {{ cachyos_repo_key }}
+  when: pkg_cachyos_key_trusted.rc != 0
+  changed_when: true
+  become: true
+
+- name: pkg | Point CachyOS mirrorlists at the ironashram mirror
+  ansible.builtin.copy:
+    content: "Server = {{ cachyos_mirror_url }}/repo/{{ item.arch }}/$repo\n"
+    dest: "/etc/pacman.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - { name: cachyos-mirrorlist, arch: "$arch" }
+    - { name: cachyos-v3-mirrorlist, arch: "$arch_v3" }
+  become: true
+
+- name: pkg | Register CachyOS repos in pacman.conf
+  ansible.builtin.blockinfile:
+    path: /etc/pacman.conf
+    marker: "# {mark} ANSIBLE MANAGED cachyos"
+    insertbefore: '^\[core\]'
+    block: |
+      [cachyos-v3]
+      Include = /etc/pacman.d/cachyos-v3-mirrorlist
+
+      [cachyos-core-v3]
+      Include = /etc/pacman.d/cachyos-v3-mirrorlist
+
+      [cachyos-extra-v3]
+      Include = /etc/pacman.d/cachyos-v3-mirrorlist
+
+      [cachyos]
+      Include = /etc/pacman.d/cachyos-mirrorlist
+  become: true
+
+- name: pkg | Install CachyOS keyring and mirrorlists
+  community.general.pacman:
+    name:
+      - cachyos-keyring
+      - cachyos-mirrorlist
+      - cachyos-v3-mirrorlist
+    state: present
+    update_cache: true
+    extra_args: --overwrite /etc/pacman.d/cachyos-mirrorlist --overwrite /etc/pacman.d/cachyos-v3-mirrorlist
+  become: true
+
 - name: pkg | Refresh package database
   community.general.pacman:
     update_cache: true
@@ -18,7 +79,7 @@
     dest: /etc/profile.d/yay.sh
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   become: true
 
 - name: pkg | Copy docker config.json
@@ -27,14 +88,14 @@
     dest: /etc/docker/daemon.json
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   notify:
     - Restart Docker
 
 - name: pkg | Blacklist qxl in the kernel cmdline
   ansible.builtin.lineinfile:
     path: /etc/default/grub
-    regexp: '^GRUB_CMDLINE_LINUX='
+    regexp: "^GRUB_CMDLINE_LINUX="
     line: 'GRUB_CMDLINE_LINUX="modprobe.blacklist=qxl"'
   become: true
   notify:
