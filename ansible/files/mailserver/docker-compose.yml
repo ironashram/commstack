@@ -13,6 +13,9 @@ services:
       - /docker/mail/rspamd-dkim_signing.conf:/etc/rspamd/override.d/dkim_signing.conf:ro
       - /docker/mail/rspamd-dkim.private:/etc/rspamd/dkim/mail.private:ro
       - /docker/mail/rspamd-options.inc:/etc/rspamd/override.d/options.inc:ro
+      - /docker/mail/rspamd-multimap.conf:/etc/rspamd/local.d/multimap.conf:ro
+      - /docker/mail/rspamd-brand_display_names.map:/etc/rspamd/local.d/brand_display_names.map:ro
+      - /docker/mail/rspamd-brand_domains.map:/etc/rspamd/local.d/brand_domains.map:ro
       - /etc/localtime:/etc/localtime:ro
       - /docker/certbot/certbot_etc:/etc/letsencrypt
     restart: always

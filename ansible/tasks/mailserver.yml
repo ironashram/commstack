@@ -66,13 +66,18 @@
     enabled: true
     state: started
 
-- name: mailserver | Copy rspamd options override
+- name: mailserver | Copy rspamd config files
   ansible.builtin.copy:
-    src: files/mailserver/rspamd-options.inc
-    dest: /docker/mail/rspamd-options.inc
+    src: files/mailserver/rspamd-{{ item }}
+    dest: /docker/mail/rspamd-{{ item }}
     owner: root
     group: root
     mode: "0644"
+  loop:
+    - options.inc
+    - multimap.conf
+    - brand_display_names.map
+    - brand_domains.map
   notify:
     - Docker Compose Up
 
