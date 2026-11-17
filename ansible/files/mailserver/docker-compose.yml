@@ -12,6 +12,7 @@ services:
       - /docker/mail/fail2ban-jail.local:/etc/fail2ban/jail.d/user-jail.local:ro
       - /docker/mail/rspamd-dkim_signing.conf:/etc/rspamd/override.d/dkim_signing.conf:ro
       - /docker/mail/rspamd-dkim.private:/etc/rspamd/dkim/mail.private:ro
+      - /docker/mail/rspamd-options.inc:/etc/rspamd/override.d/options.inc:ro
       - /etc/localtime:/etc/localtime:ro
       - /docker/certbot/certbot_etc:/etc/letsencrypt
     restart: always

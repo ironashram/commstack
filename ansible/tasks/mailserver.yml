@@ -55,6 +55,27 @@
   notify:
     - Docker Compose Up
 
+- name: mailserver | Install unbound recursive resolver for rspamd
+  community.general.pacman:
+    name: unbound
+    state: present
+
+- name: mailserver | Enable unbound recursive resolver for rspamd
+  ansible.builtin.systemd_service:
+    name: unbound
+    enabled: true
+    state: started
+
+- name: mailserver | Copy rspamd options override
+  ansible.builtin.copy:
+    src: files/mailserver/rspamd-options.inc
+    dest: /docker/mail/rspamd-options.inc
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Docker Compose Up
+
 - name: mailserver | Generate rspamd DKIM signing key
   ansible.builtin.command:
     cmd: openssl genrsa -out /docker/mail/rspamd-dkim.private 2048
