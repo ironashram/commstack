@@ -1,6 +1,6 @@
 services:
   node_exporter:
-    image: ghcr.io/prometheus/node-exporter:master-distroless@sha256:db696f2456ba68d1e2d566ea39ea8284d15bc475aab014acfeb85b0b89ca4e9c
+    image: ghcr.io/prometheus/node-exporter:master-distroless@sha256:246bc18e7a3c7161504c43c0ad3a058dcd9fd31dca2fc3b5e2f5565a36f017b4
     container_name: node-exporter
     restart: unless-stopped
     volumes:
